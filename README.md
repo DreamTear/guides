@@ -1,41 +1,34 @@
-## Ember Guides Source
+## Ember Guides 源代码
 
 [![Build Status](https://travis-ci.org/emberjs/guides.svg?branch=master)](https://travis-ci.org/emberjs/guides)
 
-This is the source for the [Ember.js Guides](https://guides.emberjs.com).
+这是 [Ember.js Guides](https://guides.emberjs.com)网站的源代码.
 
-Looking for repositories for other parts of the site? Check out
+在寻找其它部分的存储库? 请查看
 [website](https://github.com/emberjs/website),
 [ember-api-docs](https://github.com/ember-learn/ember-api-docs),
 [super-rentals tutorial](https://github.com/ember-learn/super-rentals),
 [statusboard](https://github.com/ember-learn/statusboard),
-and [styleguide](https://github.com/ember-learn/ember-styleguide)
+和 [styleguide](https://github.com/ember-learn/ember-styleguide)
 
-## Contributing
+## 特约
 
-Welcome and thanks for your help! Please see [CONTRIBUTING.md](CONTRIBUTING.md)
-for detailed instructions on how to format your work and submit a Pull Request.
+欢迎并感谢您的帮助! 请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)了解如何格式化您的工作并提交合并请求的详细说明。
 
 ## Project layout
 
-The Guides content takes the form of Markdown files (just like most READMEs).
-The Guides themselves are in the `source` folder. The left nav bar is produced from
-`data/pages.yml`. `lib` contains Middleman plugins, and `spec` contains tests
-for those plugins.
+指南内容采用Markdown文件的形式（就像大多数自述文件一样）。
+指南内容在 `source` 文件夹中。左侧的导航栏是通过
+`data/pages.yml`中产生的. `lib` 包含中间件插件,`spec` 包含这些插件的测试文件。
 
-## Running locally with Docker (recommended)
+## 本地使用Docker运行（推荐）
 
-This is the recommended method for new contributors.
-Although the Guides are built with Ruby, most work is done in Markdown files.
-You don't need to know Ruby or install its dependencies to help out. Simply follow
-the Docker container instructions below to install and run locally.
+这是推荐给新贡献者的方法。虽然指南是用Ruby构建的，但大部分工作都是在Markdown文件中完成的。
+你不需要知道Ruby或者安装它的依赖。只需按照以下Docker容器说明进行本地安装和运行即可。
 
-First, install [Docker and Compose](https://store.docker.com/search?offering=community&type=edition) and leave it running.
+首先，安装 [Docker and Compose](https://store.docker.com/search?offering=community&type=edition) 并保持运行。
 
-Next, the commands below will install all necessary dependencies for the Guides
-app and start a server. This will take a little while to run,
-possibly a few minutes. The dependencies will be installed inside a Docker
-container, and do not affect your normal developer environment.
+接下来，下面的命令将为Guides应用程序安装所有必需的依赖项并启动服务器。这需要一段时间才能运行，可能需要几分钟。依赖关系将安装在Docker容器内，并且不会影响您的正常开发人员环境。
 
 ```sh
 git clone git://github.com/emberjs/guides.git
@@ -44,9 +37,9 @@ docker-compose build
 docker-compose up
 ```
 
-You can view the site locally at [http://localhost:4567](http://localhost:4567)
+你可以查看站点，通过 [http://localhost:4567](http://localhost:4567)
 
-## Running locally with Ruby and Middleman
+## 在本地通过Ruby和中间件运行
 
 The Docker method described above is recommended over installing dependencies
 separately. However, if necessary, these are the manual steps. The Guides are built
