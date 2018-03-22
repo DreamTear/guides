@@ -1,38 +1,28 @@
-Welcome to the Ember.js Guides! This documentation will take you from
-total beginner to Ember expert.
+欢迎来到Ember.js指南！本文档将带您从初学者到Ember专家。
 
-## What is Ember?
+## 什么是 Ember?
 
-Ember is a JavaScript front-end framework designed to help you build websites with rich and complex user interactions.
-It does so by providing developers both with many features that are essential to manage complexity in modern web applications,
-as well as an integrated development toolkit that enables rapid iteration.
+Ember是一个JavaScript前端框架，旨在帮助您构建具有丰富和复杂用户交互的网站。
+它通过为开发人员提供许多对于管理现代Web应用程序复杂性至关重要的功能以及可快速迭代的集成开发工具包来实现这一点。
 
-Some of these features that you'll learn about in the guides are:
+这些指南中将介绍的一些功能包括：
 
-* [Ember CLI](./configuring-ember/configuring-ember-cli/) - A robust development toolkit to create, develop, and build Ember applications. When you see an `$ ember <command>` instruction throughout the guides, that's Ember CLI!
-* [Routing](./routing) - The central part of an Ember application. Enables developers to drive the application state from the URL.
-* [Templating engine](./templates/handlebars-basics/) - Use Handlebars syntax to write your application's templates
-* [Data layer](./models/) - Ember Data provides a consistent way to communicate with external APIs and manage application state
-* [Ember Inspector](./ember-inspector/) - A browser extension, or bookmarklet, to inspect your application live. It's also useful for spotting Ember applications in the wild, try to install it and open up the [NASA website](https://www.nasa.gov/)!
+* [Ember CLI](./configuring-ember/configuring-ember-cli/) - 一个强大的开发工具包，用于创建，开发和构建Ember应用程序。 当您在整个指南中看到一条 `$ ember <command>` 形式的命令时, 那就是Ember CLI!
+* [Routing](./routing) - Ember应用程序的核心部分。使开发人员能够从URL驱动应用程序状态。
+* [Templating engine](./templates/handlebars-basics/) -使用Handlebars语法来编写应用程序的模板
+* [Data layer](./models/) - Ember Data提供了一种与外部API进行通信并管理应用程序状态的一致方式
+* [Ember Inspector](./ember-inspector/) -  一个浏览器扩展或书签，用于现场检查您的应用程序。这对于在发现Ember应用程序很有用，尝试安装它并打开 [NASA website](https://www.nasa.gov/)!
 
-## Organization
+## 组织
 
-On the left side of each Guides page is a table of contents,
-organized into sections that can be expanded to show the topics
-they cover. Both the sections and the topics within each section are
-ordered from basic to advanced concepts.
+在每个指南页面的左侧是一个目录表，按照可以展开的章节进行展示，以显示他们所涵盖的主题。每节中的章节和主题都是从基本到高级的概念。
 
-The Guides are intended to contain practical explanations of how to
-build Ember apps, focusing on the most widely-used features of Ember.js.
-For comprehensive documentation of every Ember feature and API, see the
-[Ember.js API documentation](http://emberjs.com/api/).
+本指南旨在包含如何构建Ember应用程序的实际解释，重点介绍Ember.js最广泛使用的功能。有关每个Ember功能和API的全面文档，请参阅[Ember.js API 文档](http://emberjs.com/api/).
 
-The Guides begin with an explanation of how to get started with Ember,
-followed by a tutorial on how to build your first Ember app.
-If you're brand new to Ember,
-we recommend you start off by following along with these first two sections of the Guides.
+本指南首先解释如何开始使用Ember，然后介绍如何构建您的第一个Ember应用程序。
+如果你刚开始使用Ember,我们建议您首先遵循本指南的前两部分。
 
-## Assumptions
+## 假设
 
 While we try to make the Guides as beginner-friendly as we can,
 we must establish a baseline so that the guides can keep focused on Ember.js functionality.
