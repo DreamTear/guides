@@ -15,11 +15,11 @@
 
 欢迎并感谢您的帮助! 请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)了解如何格式化您的工作并提交合并请求的详细说明。
 
-## Project layout
+## 项目结构
 
 指南内容采用Markdown文件的形式（就像大多数自述文件一样）。
 指南内容在 `source` 文件夹中。左侧的导航栏是通过
-`data/pages.yml`中产生的. `lib` 包含中间件插件,`spec` 包含这些插件的测试文件。
+`data/pages.yml`中产生的. `lib` 包含Middleman插件,`spec` 包含这些插件的测试文件。
 
 ## 本地使用Docker运行（推荐）
 
@@ -39,39 +39,37 @@ docker-compose up
 
 你可以查看站点，通过 [http://localhost:4567](http://localhost:4567)
 
-## 在本地通过Ruby和中间件运行
+## 在本地通过Ruby和Middleman运行
 
-The Docker method described above is recommended over installing dependencies
-separately. However, if necessary, these are the manual steps. The Guides are built
-with Middleman, which runs on Ruby 1.9.3 or newer.
+上面描述的Docker方法推荐单独安装依赖关系。但是，如果有必要，下面是手动步骤。 这些指南是用Middleman构建的，它运行在Ruby 1.9.3或更新的版本上。
 
-Mac users should install Ruby using rbenv to avoid changing their OS dependencies:
+Mac用户应该使用rbenv安装Ruby，以避免更改他们的操作系统依赖关系：
 
 ```
 brew install rbenv
 ```
 
-Follow the [rbenv installation instructions](https://github.com/rbenv/rbenv) to install the Ruby version specified [here](.ruby-version), then go through the init steps, set a global version, and restart the terminal. If `gem env home` shows rbenv in the path, your installation was successful. You should not have to sudo install any gems.
+按照 [rbenv 安装说明](https://github.com/rbenv/rbenv)安装指定的Ruby版本 [此处](.ruby-version), 然后执行init步骤，设置全局版本，然后重新启动终端。如果 `gem env home` 在路径中显示rbenv，则说明安装成功。你不应该sudo安装任何gems.
 
-Once you have installed Ruby, you will need bundler and Middleman:
+一旦你安装了Ruby，你将需要bundler和Middleman：
 
 ```
 gem install bundler middleman
 ```
 
-During build, Middleman will require Aspell to look for misspellings. On Macs, it can be installed via Homebrew:
+在构建期间，Middleman将要求Aspell寻找拼写错误。在Mac上，它可以通过Homebrew安装：
 
 ``` sh
 brew install aspell --with-lang-en
 ```
 
-On Windows, you can download an [installer](http://aspell.net/win32/), but unfortunately it is unmaintained. On Linux, you can install with your distribution's package manager. On all platforms, you can also [build the most recent version from source](http://aspell.net/man-html/Installing.html).
+在Windows上，您可以下载 [安装程序](http://aspell.net/win32/)，但不幸的是它没有维护。在Linux上，您可以使用发行版的软件包管理器进行安装。 在所有平台上，您还可以 [从源代码构建最新版本](http://aspell.net/man-html/Installing.html).
 
-Some Mac users may also need to install openSSL, which will be indicated in an error during the bundle command. See [Troubleshooting.md](TROUBLESHOOTING.md).
+一些Mac用户可能还需要安装openSSL，这在bundle命令中会显示错误。请参阅 [Troubleshooting.md](TROUBLESHOOTING.md).
 
-To get started:
+开始：
 
-#### Local Dev
+#### 本地开发
 ``` sh
 git clone git://github.com/emberjs/guides.git
 cd guides
@@ -79,21 +77,21 @@ bundle
 bundle exec middleman
 ```
 
-#### Viewing
+#### 查看
 
-Then visit [http://localhost:4567/](http://localhost:4567/).
+然后访问 [http://localhost:4567/](http://localhost:4567/).
 
-If you run into problems, check [Troubleshooting.md](TROUBLESHOOTING.md).
+如果遇到问题，请检查 [Troubleshooting.md](TROUBLESHOOTING.md).
 
-### Spellchecking
+### 拼写检查
 
-If you have a false hit during spellchecking, you can add the word to `/data/spelling-exceptions.txt`.
-Words are line separated and case insensitive.
+如果您在拼写检查过程中遇到错误，则可以将错误单词添加到`/data/spelling-exceptions.txt`。
+单词是行分隔的，不区分大小写。
 
-# Maintainers
+# 维护者
 
-See [MAINTAINERS.md](MAINTAINERS.md).
+请参阅 [MAINTAINERS.md](MAINTAINERS.md).
 
-# Releasing
+# 发版信息
 
-See https://github.com/emberjs/guides.emberjs.com.
+请参阅 https://github.com/emberjs/guides.emberjs.com.
