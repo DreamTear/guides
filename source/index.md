@@ -24,74 +24,49 @@ Ember是一个JavaScript前端框架，旨在帮助您构建具有丰富和复�
 
 ## 假设
 
-While we try to make the Guides as beginner-friendly as we can,
-we must establish a baseline so that the guides can keep focused on Ember.js functionality.
-We will try to link to appropriate documentation whenever a concept is introduced.
+虽然我们尽可能使指南尽可能地适合初学者，但我们必须建立一个基准，以便指南能够专注于Ember.js功能。只要引入一个概念，我们就会尝试链接到适当的文档。
 
-To make the most out of the guides, you should have a working knowledge of:
+为了充分利用指南，您应该具备以下知识：
 
-* **HTML, CSS, JavaScript** - the building blocks of web pages. You can find documentation of each of these technologies at the [Mozilla Developer Network][mdn].
-* **Promises** - the native way to deal with asynchrony in your JavaScript code. See the relevant [Mozilla Developer Network][promises] section.
-* **ES2015 modules** - you will better understand [Ember CLI's][ember-cli] project structure and import paths if you are comfortable with [JavaScript Modules][js-modules].
-* **ES2015 syntax** - Ember CLI comes with Babel.js by default so you can
-take advantage of newer language features such as arrow functions, template
-strings, destructuring, and more. You can check the
-[Babel.js documentation][babeljs] or read [Understanding ECMAScript 6][es6]
-online.
+* **HTML, CSS, JavaScript** - 网页的构建块。您可以在 [Mozilla开发者网络上][mdn]找到每种技术的文档。.
+* **Promises** - 原生的方式来处理JavaScript代码中的异步。请参阅相关的 [Mozilla开发者网络][promises] 部分。
+* **ES2015 modules** - 如果您熟悉[JavaScript模块][js-modules]，您将更好地理解[Ember CLI][ember-cli]的项目结构和导入路径.
+* **ES2015 syntax** -  Ember CLI默认带有Babel.js，因此您可以利用更新的语言功能，如箭头函数，模板字符串，解构等等。您可以检查[Babel.js 文档][babeljs] 或 在线阅读 [理解 ECMAScript 6][es6]。
 
-## A Note on Mobile Performance
+## 关于移动性能的说明
 
-Ember will do a lot to help you write fast apps, but it can't prevent you from
-writing a slow one. This is especially true on mobile devices. To deliver a great
-experience, it's important to measure performance early and often, and with a diverse
-set of devices.
+Ember会帮你编写快速的应用程序，但它不能阻止你编写一个缓慢的应用程序。在移动设备上尤其如此。为了提供出色的体验，重要的是要及早并经常地使用各种设备来衡量性能。
 
-Make sure you are testing performance on real devices. Simulated mobile
-environments on a desktop computer give an optimistic-at-best representation of
-what your real world performance will be like. The more operating systems and
-hardware configurations you test, the more confident you can be.
+确保你在真实设备上测试性能。在台式计算机上模拟移动环境可以为您的真实世界的性能提供乐观的最佳表现。您测试的操作系统和硬件配置越多，您就越有信心。
 
-Due to their limited network connectivity and CPU power, great performance on
-mobile devices rarely comes for free. You should integrate performance testing
-into your development workflow from the beginning. This will help you avoid
-making costly architectural mistakes that are much harder to fix if you only
-notice them once your app is nearly complete.
+由于其有限的网络连接和CPU功能，移动设备上的卓越性能很少能够免费获得。您应该从一开始就将性能测试集成到您的开发工作流程中。这将帮助您避免构建昂贵的体系结构错误，如果您在应用几乎完成时才注意到这些错误，那么这些错误将更难修复。
 
-In short:
+简而言之：
 
-1. Always test on real, representative mobile devices.
-2. Measure performance from the beginning, and keep testing as your app
-   develops.
+1. 始终在真实，有代表性的移动设备上进行测试
+2. 从一开始就衡量性能，并随着应用程序的开发继续测试。
 
-These tips will help you identify problems early so they can be addressed systematically, rather than
-in a last-minute scramble.
+这些提示将帮助您及早发现问题，以便系统地解决问题，而不是在最后一刻的争夺中解决问题。
 
-## Reporting a problem
+## 报告问题
 
-Typos, missing words, and code samples with errors are all considered
-documentation bugs. If you spot one of them, or want to otherwise improve
-the existing guides, we are happy to help you help us!
+错别字，遗漏词和错误代码示例均被视为文档错误。如果您发现其中一个，或者想改善现有指南，
+我们很乐意帮助您解决问题！
 
-Some of the more common ways to report a problem with the guides are:
+用指南报告问题的一些更常见的方法是：
 
-* Using the pencil icon on the top-right of each guide page
-* Opening an issue or pull request to [the GitHub repository][gh-guides]
+* 使用每个指南页面右上角的铅笔图标
+* 打开问题或向 [GitHub存储库][gh-guides]提出请求
 
-Clicking the pencil icon will bring you to GitHub's editor for that
-guide so you can edit right away, using the Markdown markup language.
-This is the fastest way to correct a typo, a missing word, or an error in
-a code sample.
+点击铅笔图标会将您带到GitHub的该指南的编辑器中，以便您可以使用Markdown标记语言立即进行编辑。
+这是纠正代码示例中的拼写错误，遗漏词或错误的最快方法。
 
-If you wish to make a more significant contribution be sure to check our
-[issue tracker][gh-guides-issues] to see if your issue is already being
-addressed. If you don't find an active issue, open a new one.
+如果您希望做出更重要的贡献，请务必查看我们的[问题跟踪器][gh-guides-issues] ，
+看看您的问题是否已经得到解决。如果您没有找到有效的问题，请打开一个新的问题。
 
-If you have any questions about styling or the contributing process, you
-can check out our [contributing guide][gh-guides-contributing]. If your
-question persists, reach us at `#-team-learning` on the [Slack
-group][slackin].
+如果您对造型或参与过程有任何疑问，可以查看我们的[参与指南][gh-guides-contributing]。如果您的问题仍然存在，`#-team-learning` 请联系 [Slack团队][slackin].
 
-Good luck!
+祝你好运！
 
 [ember-cli]: https://ember-cli.com/
 
