@@ -1,47 +1,40 @@
-As you're developing your Ember app, you'll likely run into common scenarios that aren't addressed by Ember itself,
-such as authentication or using SASS for your stylesheets.
-Ember CLI provides a common format called [Ember Addons](#toc_addons) for distributing reusable libraries
-to solve these problems.
-Additionally, you may want to make use of front-end dependencies like a CSS framework
-or a JavaScript datepicker that aren't specific to Ember apps.
+在开发您的Ember应用程序时，您可能会遇到Ember本身无法解决的常见情况，例如身份验证或使用SASS处理样式表。
+Ember CLI提供了一种名为 [Ember Addons](#toc_addons) 的通用格式，用于分发可重用的库来解决这些问题。
+此外，您可能希望利用不特定于Ember应用的前端依赖项，如CSS框架或JavaScript日期选择器。
 
-## Addons
+## Addons(插件)
 
-Ember Addons can be installed using [Ember CLI](http://ember-cli.com/extending/#developing-addons-and-blueprints)
-(e.g. `ember install ember-cli-sass`).
-Addons may bring in other dependencies by modifying your project's `bower.json` file automatically.
+Ember插件可以使用 [Ember CLI](http://ember-cli.com/extending/#developing-addons-and-blueprints)
+(例如 `ember install ember-cli-sass`)进行安装。
+插件可能会通过 `bower.json`自动修改项目文件引入其他依赖项。
 
-You can find listings of addons on [Ember Observer](http://emberobserver.com).
+你可以在 [Ember Observer](http://emberobserver.com)上找到插件列表。
 
-## Other assets
+## Other assets(其他资产)
 
-Third-party JavaScript not available as an addon or Bower package should be placed in the `vendor/` folder in your project.
+第三方JavaScript不可用作插件或Bower软件包应放置在 `vendor/` 项目的文件夹中。
 
-Your own assets (such as `robots.txt`, `favicon`, custom fonts, etc) should be placed in the `public/` folder in your project.
+你自己的资产 (比如 `robots.txt`, `favicon`, 定制字体,等) 应放置在在 `public/` 文件夹中的项目。
 
-## Compiling Assets
+## Compiling Assets(编译资产)
 
-When you're using dependencies that are not included in an addon,
-you will have to instruct Ember CLI to include your assets in the build.
-This is done using the asset manifest file `ember-cli-build.js`.
-You should only try to import assets located in the `bower_components` and `vendor` folders.
+当您使用未包含在插件中的依赖项时，您必须指示Ember CLI将您的资产包含在构建中。
+编译使用 `ember-cli-build.js`中的配置来进行。您应该只尝试导入位于 `bower_components` 和 `vendor` 文件夹中的资产。
 
-### Globals provided by JavaScript assets
+### Globals provided by JavaScript assets(全球资源由JavaScript资源提供)
 
-The globals provided by some assets (like `moment` in the below example) can be used in your application
-without the need to `import` them.
-Provide the asset path as the first and only argument.
+某些全局变量 (例如下面例子中使用到的 `moment`) 可以在您的应用程序中使用
+，而不需要 `import` 它们。提供资产路径作为第一个也是唯一的参数。
 
 ```ember-cli-build.js
 app.import('bower_components/moment/moment.js');
 ```
 
-You will need to add `"moment"` to the `globals` section in `.eslintrc.js` to prevent ESLint errors
-about using an undefined variable.
+你需要添加 `"moment"` 到 `.eslintrc.js` 的 `globals` 部分，以防止ESLint出现使用未定义变量的错误。
 
-### AMD JavaScript modules
+### AMD JavaScript modules(AMD JavaScript模块)
 
-Provide the asset path as the first argument, and the list of modules and exports as the second.
+提供资产路径作为第一个参数，并将模块和导出列表作为第二个参数。
 
 ```ember-cli-build.js
 app.import('bower_components/ic-ajax/dist/named-amd/main.js', {
@@ -57,12 +50,12 @@ app.import('bower_components/ic-ajax/dist/named-amd/main.js', {
 });
 ```
 
-You can now `import` them in your app. (e.g. `import { raw as icAjaxRaw } from 'ic-ajax';`)
+你闲杂i可以在你的app中 `import` 他们。 (例如 `import { raw as icAjaxRaw } from 'ic-ajax';`)
 
-### Environment-Specific Assets
+### Environment-Specific Assets(环境特定资产)
 
-If you need to use different assets in different environments, specify an object as the first parameter.
-That object's key should be the environment name, and the value should be the asset to use in that environment.
+如果您需要在不同的环境中使用不同的资产，请将对象指定为第一个参数。
+对象的 key 应该是环境名称, 而且值应该是环境中使用的资源。
 
 ```ember-cli-build.js
 app.import({
@@ -71,9 +64,8 @@ app.import({
 });
 ```
 
-If you need to import an asset in only one environment you can wrap `app.import` in an `if` statement.
-For assets needed during testing, you should also use the `{type: 'test'}` option to make sure they
-are available in test mode.
+如果您只需要在一个环境中导入资产，则可以将 `app.import` 放在要给 `if` 语句中。
+对于在测试期间需要使用的资源，你可以通过 `{type: 'test'}` 选项来确保它们在测试模式下可用。
 
 ```ember-cli-build.js
 if (app.env === 'development') {
@@ -89,34 +81,34 @@ if (app.env === 'test') {
 
 ### CSS
 
-Provide the asset path as the first argument:
+提供资产路径作为第一个参数：
 
 ```ember-cli-build.js
 app.import('bower_components/foundation/css/foundation.css');
 ```
 
-All style assets added this way will be concatenated and output as `/assets/vendor.css`.
+以这种方式添加的所有样式将被输出到 `/assets/vendor.css`.
 
-### Other Assets
+### Other Assets(其他资产)
 
-All assets located in the `public/` folder will be copied as is to the final output directory, `dist/`.
+所有位于 `public/` 目录下的资源将被原样复制到 `dist/`目录下。
 
-For example, a `favicon` located at `public/images/favicon.ico` will be copied to `dist/images/favicon.ico`.
+例如  `favicon` 路径为 `public/images/favicon.ico` 将被复制到 `dist/images/favicon.ico`.
 
-All third-party assets, included either manually in `vendor/` or via a package manager like Bower, must be added via `import()`.
+所有第三方资源，包括手动添加到 `vendor/` 目录下，或者通过像Bower这样的包管理器添加的资源，必须通过 `import()`添加。
 
-Third-party assets that are not added via `import()` will not be present in the final build.
+没有通过 `import()` 添加的第三方资源,最后编译时将不会被添加在最终版本中。
 
-By default, `import`ed assets will be copied to `dist/` as they are, with the existing directory structure maintained.
+默认情况下，被 `import`的资源，将被按原来的目录结构复制到 `dist/` 目录下。
 
 ```ember-cli-build.js
 app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf');
 ```
 
-This example would create the font file in `dist/font-awesome/fonts/fontawesome-webfont.ttf`.
+这个例子会在中创建字体文件 `dist/font-awesome/fonts/fontawesome-webfont.ttf`.
 
-You can also optionally tell `import()` to place the file at a different path.
-The following example will copy the file to `dist/assets/fontawesome-webfont.ttf`.
+您还可以选择配置 `import()` 将文件放置在不同的路径中。
+以下示例将将该文件复制到 `dist/assets/fontawesome-webfont.ttf`.
 
 ```ember-cli-build.js
 app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf', {
@@ -124,9 +116,8 @@ app.import('bower_components/font-awesome/fonts/fontawesome-webfont.ttf', {
 });
 ```
 
-If you need to load certain dependencies before others,
-you can set the `prepend` property equal to `true` on the second argument of `import()`.
-This will prepend the dependency to the vendor file instead of appending it, which is the default behavior.
+如果你需要在别人之前加载某些依赖关系，你可以在 `import()`的第二个参数上设置`prepend`为`true`。
+这将在默认行为前添加依赖关系到vendor文件。
 
 ```ember-cli-build.js
 app.import('bower_components/es5-shim/es5-shim.js', {
