@@ -8,7 +8,5 @@
 
 这种关注的分离不仅可以阐明应用程序的体系结构，还可以提高其效率。当在你的程序由于测试或者服务端渲染需要重启是尤其明显
 (例如 通过 [FastBoot](https://github.com/tildeio/ember-cli-fastboot)).
-The configuration of a single `Application` can be done once
-and shared among multiple stateful `ApplicationInstance` instances.
-These instances can be discarded once they're no longer needed
-(e.g. when a test has run or FastBoot request has finished).
+ `Application`可以配置一次，然后在多个状态的  `ApplicationInstance` 实例间共享。
+这些实例可以在不再需要时丢弃(例如 当测试运行或FastBoot请求完成时).
