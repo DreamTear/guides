@@ -148,18 +148,17 @@ export default Route.extend({
 application.inject('route:index', 'logger', 'logger:main');
 ```
 
-In this case, the logger will only be injected on the index route.
+在这个例子中，logger只会被注入到indx路由中。
 
-Injections can be made into any class that requires instantiation.
-This includes all of Ember's major framework classes, such as components, helpers, routes, and the router.
+注入可以添加到任何需要实例化的类。这包括Ember的所有框架类，如  components, helpers, routes, 和  router.
 
-### Ad Hoc Injections
+### Ad Hoc Injections(Ad Hoc 注入)
 
-Dependency injections can also be declared directly on Ember classes using `inject`.
-Currently, `inject` supports injecting controllers (via `import { inject } from '@ember/controller';`)
-and services (via `import { inject } from '@ember/service';`).
+依赖注入也可以直接使用 `inject`在Ember类中声明。
+目前， `inject` 支持注入控制器 (通过 `import { inject } from '@ember/controller';`)
+和服务 (通过 `import { inject } from '@ember/service';`).
 
-The following code injects the `shopping-cart` service on the `cart-contents` component as the property `cart`:
+下面的代码注入 `shopping-cart` 服务到 `cart-contents` 组件中作为 `cart`属性:
 
 ```app/components/cart-contents.js
 import Component from '@ember/component';
@@ -169,6 +168,8 @@ export default Component.extend({
   cart: service('shopping-cart')
 });
 ```
+
+如果你希望注入和属性同名的服务，只需要使用service作为服务的名字（名字的dasherized版本将被使用）
 
 If you'd like to inject a service with the same name as the property,
 simply leave off the service name (the dasherized version of the name will be used):
@@ -182,11 +183,10 @@ export default Component.extend({
 });
 ```
 
-## Factory Instance Lookups
+## Factory Instance Lookups(工厂实例查找)
 
-To fetch an instantiated factory from the running application you can call the
-[`lookup`](https://emberjs.com/api/ember/release/classes/ApplicationInstance/methods/lookup?anchor=lookup) method on an application instance. This method takes a string
-to identify a factory and returns the appropriate object.
+要从正在运行的应用程序中获取工厂的实例，您可以调用
+[`lookup`](https://emberjs.com/api/ember/release/classes/ApplicationInstance/methods/lookup?anchor=lookup) 方法在应用程序实例上。 该方法采用字符串来标识工厂并返回适当的对象。
 
 ```javascript
 applicationInstance.lookup('factory-type:factory-name');
