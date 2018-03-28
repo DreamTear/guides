@@ -1,39 +1,34 @@
-Ember applications utilize the [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)
-("DI") design pattern to declare and instantiate classes of objects and dependencies between them.
-Applications and application instances each serve a role in Ember's DI implementation.
+Ember应用程序利用 [依赖注入](https://en.wikipedia.org/wiki/Dependency_injection)
+("DI") 设计模式来声明和实例化对象类和它们之间的依赖关系。应用程序和应用程序实例均在Ember的DI实现中担任角色。
 
-An [`Application`](https://emberjs.com/api/ember/release/classes/Application) serves as a "registry" for dependency declarations.
-Factories (i.e. classes) are registered with an application,
-as well as rules about "injecting" dependencies that are applied when objects are instantiated.
+一个 [`Application`](https://emberjs.com/api/ember/release/classes/Application) 充当“注册表”的依赖声明。
+工厂（即类）被应用程序注册，作为对象实例化时用来“注入”依赖的规则。
 
-An [`ApplicationInstance`](https://emberjs.com/api/ember/release/classes/ApplicationInstance) serves as the "owner" for objects that are instantiated from registered factories.
-Application instances provide a means to "look up" (i.e. instantiate and / or retrieve) objects.
+一个 [`ApplicationInstance`](https://emberjs.com/api/ember/release/classes/ApplicationInstance) 作为从工厂实例化的对象的“所有者”。
+应用程序实例提供了一种“查找”（即实例化和/或检索）对象的方法。
 
-> _Note: Although an `Application` serves as the primary registry for an app,
-each `ApplicationInstance` can also serve as a registry.
-Instance-level registrations are useful for providing instance-level customizations,
-such as A/B testing of a feature._
+> _注意： 虽然 `Application` 作为应用程序的主要注册表，
+但每个 `ApplicationInstance` 同样可以充当注册表.
+实例级别的注册对于提供实例级自定义非常有用，
+例如功能的A / B测试。_
 
-## Factory Registrations
+## Factory Registrations(工厂注册)
 
-A factory can represent any part of your application, like a _route_, _template_, or custom class.
-Every factory is registered with a particular key.
-For example, the index template is registered with the key `template:index`,
-and the application route is registered with the key `route:application`.
+工厂可以表示应用程序的任何部分， 如 _路由_, _模板_, 或者自定义类。
+每个工厂都通过一个特定的key被注册。例如：index 模板被注册通过key `template:index`,
+而application 路由 被注册通过key `route:application`。
 
-Registration keys have two segments split by a colon (`:`).
-The first segment is the framework factory type, and the second is the name of the particular factory.
-Hence, the `index` template has the key `template:index`.
-Ember has several built-in factory types, such as `service`, `route`, `template`, and `component`.
+注册的 keys 有两个由 (`:`)分割的段。
+第一部分是框架工厂类型，第二部分是特定工厂的名称
+因此，  `index` 模板的 key是 `template:index`.
+Ember 有几个内置的工厂类, 例如 `service`, `route`, `template`, 和 `component`.
 
-You can create your own factory type by simply registering a factory with the new type.
-For example, to create a `user` type,
-you'd simply register your factory with `application.register('user:user-to-register')`.
+您可以简单地注册新的工厂类别来创建自定义的工厂类。例如，要创建一个 `user` 类型,
+您只需注册工厂 `application.register('user:user-to-register')`.
 
-Factory registrations must be performed either in application
-or application instance initializers (with the former being much more common).
+工厂注册必须在应用程序或应用程序实例初始化程序中执行（前者更常见）。
 
-For example, an application initializer could register a `Logger` factory with the key `logger:main`:
+例如，应用程序初始化程序可以注册一个 `Logger` 工厂通过 key `logger:main`:
 
 ```app/initializers/logger.js
 import EmberObject from '@ember/object';
@@ -54,14 +49,13 @@ export default {
 };
 ```
 
-### Registering Already Instantiated Objects
+### Registering Already Instantiated Objects(在实例化对象上注册)
 
-By default, Ember will attempt to instantiate a registered factory when it is looked up.
-When registering an already instantiated object instead of a class,
-use the `instantiate: false` option to avoid attempts to re-instantiate it during lookups.
+默认情况下， Ember 将尝试去实例化一个注册工厂，当它被查找到。
+当注册已经实例化的对象而不是类时，
+使用该 `instantiate: false` 选项可避免尝试在查找过程中重新实例化它。
 
-In the following example, the `logger` is a plain JavaScript object that should
-be returned "as is" when it's looked up:
+在下面的示例中，  `logger` 是一个普通的JavaScript对象，应该在查找时“按原样”返回：
 
 ```app/initializers/logger.js
 export function initialize(application) {
@@ -80,16 +74,14 @@ export default {
 };
 ```
 
-### Registering Singletons vs. Non-Singletons
+### Registering Singletons vs. Non-Singletons(注册单例与非单例)
 
-By default, registrations are treated as "singletons".
-This simply means that an instance will be created when it is first looked up,
-and this same instance will be cached and returned from subsequent lookups.
+默认情况下， 注册被处理为 "单例".
+这仅仅意味着一个实例将在第一次查找时被创建，并且这个实例将被缓存并从随后的查找中返回。
 
-When you want fresh objects to be created for every lookup,
-register your factories as non-singletons using the `singleton: false` option.
+当您希望为每个查找创建新对象时，请使用该 `singleton: false` 选项将工厂注册为非单例。
 
-In the following example, the `Message` class is registered as a non-singleton:
+在下面的例子中， `Message` 类被注册为非单例：
 
 ```app/initializers/notification.js
 import EmberObject from '@ember/object';
@@ -108,11 +100,11 @@ export default {
 };
 ```
 
-## Factory Injections
+## Factory Injections(工厂注入)
 
-Once a factory is registered, it can be "injected" where it is needed.
+一旦工厂被注册，它可以在需要的地方“注入”。
 
-Factories can be injected into whole "types" of factories with *type injections*. For example:
+工厂可以被注入进所有的工厂类型通过 *类型注入*. 例如：
 
 ```app/initializers/logger.js
 import EmberObject from '@ember/object';
@@ -134,11 +126,10 @@ export default {
 };
 ```
 
-As a result of this type injection,
-all factories of the type `route` will be instantiated with the property `logger` injected.
-The value of `logger` will come from the factory named `logger:main`.
+这种注入的结果是，所有的`route` 工厂将被注入属性`logger` .
+`logger` 的值将来自 `logger:main`工厂.
 
-Routes in this example application can now access the injected logger:
+此示例应用程序中的路由现在可以访问注入的logger：
 
 ```app/routes/index.js
 import Route from '@ember/routing/route';
@@ -151,7 +142,7 @@ export default Route.extend({
 });
 ```
 
-Injections can also be made on a specific factory by using its full key:
+注射也可以通过使用其全键在特定工厂进行：
 
 ```js
 application.inject('route:index', 'logger', 'logger:main');
