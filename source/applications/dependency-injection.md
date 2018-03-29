@@ -192,14 +192,11 @@ export default Component.extend({
 applicationInstance.lookup('factory-type:factory-name');
 ```
 
-The application instance is passed to Ember's instance initializer hooks and it
-is added as the "owner" of each object that was instantiated by the application
-instance.
+应用程序实例被传递给Ember的实例初始化程序钩子，并将其添加为应用程序实例实例化的每个对象的“所有者”。
 
-### Using an Application Instance Within an Instance Initializer
+### Using an Application Instance Within an Instance Initializer(在实例初始化程序中使用应用程序实例)
 
-Instance initializers receive an application instance as an argument, providing
-an opportunity to look up an instance of a registered factory.
+实例初始化方法接收应用程序的实例作为它的一个参数，从而提供查找已注册工厂实例的机会。
 
 ```app/instance-initializers/logger.js
 export function initialize(applicationInstance) {
@@ -214,15 +211,11 @@ export default {
 };
 ```
 
-### Getting an Application Instance from a Factory Instance
+### Getting an Application Instance from a Factory Instance(从工厂实例获取应用程序实例)
 
-[`Ember.getOwner`](https://emberjs.com/api/ember/release/classes/@ember%2Fapplication/methods/getOwner?anchor=getOwner) will retrieve the application instance that "owns" an
-object. This means that framework objects like components, helpers, and routes
-can use [`Ember.getOwner`](https://emberjs.com/api/ember/release/classes/@ember%2Fapplication/methods/getOwner?anchor=getOwner) to perform lookups through their application
-instance at runtime.
+[`Ember.getOwner`](https://emberjs.com/api/ember/release/classes/@ember%2Fapplication/methods/getOwner?anchor=getOwner) 将返回“拥有”此对象的应用程序实例。 这意味着像这些框架中的对象可以使用 [`Ember.getOwner`](https://emberjs.com/api/ember/release/classes/@ember%2Fapplication/methods/getOwner?anchor=getOwner) 在运行时通过应用程序实例执行查找。
 
-For example, this component plays songs with different audio services based
-on a song's `audioType`.
+例如，此组件使用不同的音频服务播放歌曲,基于歌曲的 `audioType`.
 
 ```app/components/play-audio.js
 import Component from '@ember/component';

@@ -1,28 +1,24 @@
-Ember's internals and most of the code you will write in your applications takes place in a run loop.
-The run loop is used to batch, and order (or reorder) work in a way that is most effective and efficient.
+Ember的内部和大部分代码将在运行循环中进行。运行循环用于批处理，并以最有效和高效的方式进行排序（或重新排序）。
 
-It does so by scheduling work on specific queues.
-These queues have a priority, and are processed to completion in priority order.
+它通过调度特定队列的工作来实现.这些队列具有优先级，并按优先级顺序处理完成。
 
-For basic Ember app development scenarios, you don't need to understand the run loop or use it directly.
+对于基本的Ember应用程序开发方案，您不需要了解运行循环或直接使用它。所有常用方式已经为你友好的提供，不需要直接使用运行循环。
 All common paths are paved nicely for you and don't require working with the run loop directly.
 
-The most common case for using the run loop is integrating with a non-Ember API
-that includes some sort of asynchronous callback.
-For example:
+使用运行循环的最常见情况是与包含某种异步回调的非Ember API集成。例如：
 
-- DOM update and event callbacks
-- `setTimeout` and `setInterval` callbacks
-- `postMessage` and `messageChannel` event handlers
-- AJAX callbacks
-- Websocket callbacks
+- DOM 更新和事件回调
+- `setTimeout` 和 `setInterval` 回调
+- `postMessage` 和 `messageChannel` 事件回调
+- AJAX 回调
+- Websocket 回调
 
-## Why is the run loop useful?
+## Why is the run loop useful?(为什么运行循环这么有用？)
 
-Very often, batching similar work has benefits.
+很多时候，分批处理类似的工作是有益的。Web浏览器可以完成相似的操作，通过批量更改DOM。Very often, batching similar work has benefits.
 Web browsers do something quite similar by batching changes to the DOM.
 
-Consider the following HTML snippet:
+考虑下面的HTML片段：
 
 ```html
 <div id="foo"></div>
@@ -30,7 +26,7 @@ Consider the following HTML snippet:
 <div id="baz"></div>
 ```
 
-and executing the following code:
+并执行以下代码：
 
 ```javascript
 foo.style.height = '500px' // write
@@ -43,9 +39,7 @@ baz.style.height = '200px' // write
 baz.offsetHeight // read (recalculate style, layout, expensive!)
 ```
 
-In this example, the sequence of code forced the browser to recalculate style, and relayout after each step.
-However, if we were able to batch similar jobs together,
-the browser would have only needed to recalculate the style and layout once.
+在这个例子中，代码序列迫使浏览器重新计算风格，并在每一步之后重新布局。但是，如果我们能够将相似的作业分批处理，那么浏览器只需重新​​计算一次样式和布局即可。
 
 ```javascript
 foo.style.height = '500px' // write
@@ -57,10 +51,9 @@ bar.offsetHeight // read (fast since style and layout are already known)
 baz.offsetHeight // read (fast since style and layout are already known)
 ```
 
-Interestingly, this pattern holds true for many other types of work.
-Essentially, batching similar work allows for better pipelining, and further optimization.
+有趣的是，这种模式适用于许多其他类型的工作。从本质上讲，批处理类似的工作可以实现更好的流水线和进一步的优化。
 
-Let's look at a similar example that is optimized in Ember, starting with a `User` object:
+我们来看一个在Ember中优化的类似示例， 从一个 `User` 对象开始：
 
 ```javascript
 import EmberObject, {
@@ -77,14 +70,14 @@ let User = EmberObject.extend({
 });
 ```
 
-and a template to display its attributes:
+和一个模板来显示其属性：
 
 ```handlebars
 {{firstName}}
 {{fullName}}
 ```
 
-If we execute the following code without the run loop:
+如果我们在没有运行循环的情况下执行以下代码：
 
 ```javascript
 let user = User.create({ firstName: 'Tom', lastName: 'Huda' });
@@ -95,10 +88,9 @@ user.set('lastName', 'Katz');
 // {{lastName}} and {{fullName}} are updated
 ```
 
-We see that the browser will rerender the template twice.
+我们看到浏览器会将模板重新渲染两次。
 
-However, if we have the run loop in the above code,
-the browser will only rerender the template once the attributes have all been set.
+但是，如果我们在上面的代码中有循环，浏览器只会在属性全部设置完成后重新渲染模板。
 
 ```javascript
 let user = User.create({ firstName: 'Tom', lastName: 'Huda' });
@@ -108,47 +100,40 @@ user.set('firstName', 'Tom');
 user.set('lastName', 'Huda');
 ```
 
-In the above example with the run loop, since the user's attributes end up at the same values as before execution,
-the template will not even rerender!
+在上面的运行循环示例中，由于用户属性的结果与执行前相同，所以模板甚至不会重新渲染！
 
-It is of course possible to optimize these scenarios on a case-by-case basis,
-but getting them for free is much nicer.
-Using the run loop, we can apply these classes of optimizations not only for each scenario, but holistically app-wide.
+当然，可以根据具体情况优化这些方案，但免费获得这些方案会更好。使用运行循环，我们不仅可以将这些类的优化应用于每个场景，还可以应用于整个应用程序。
 
-## How does the Run Loop work in Ember?
+## How does the Run Loop work in Ember?(运行循环如何在Ember中工作？)
 
-As mentioned earlier, we schedule work (in the form of function invocations) on queues,
-and these queues are processed to completion in priority order.
+如前所述，我们在队列上安排工作（以函数调用的形式），并按优先级顺序处理这些队列。
 
-What are the queues, and what is their priority order?
+队列是什么，他们的优先顺序是什么？
 
 ```javascript
 Ember.run.queues
 // => ["sync", "actions", "routerTransitions", "render", "afterRender", "destroy"]
 ```
 
-Because the priority is first to last, the "sync" queue has higher priority than the "render" or "destroy" queue.
+由于优先级是从高到低的，"sync"队列比"render" 或 "destroy"队列有更高的优先级。
 
-## What happens in these queues?
+## What happens in these queues?(在这些队列中会发生什么？)
 
-* The `sync` queue contains binding synchronization jobs.
-* The `actions` queue is the general work queue and will typically contain scheduled tasks e.g. promises.
-* The `routerTransitions` queue contains transition jobs in the router.
-* The `render` queue contains jobs meant for rendering, these will typically update the DOM.
-* The `afterRender` queue contains jobs meant to be run after all previously scheduled render tasks are complete.
-This is often good for 3rd-party DOM manipulation libraries,
-that should only be run after an entire tree of DOM has been updated.
-* The `destroy` queue contains jobs to finish the teardown of objects other jobs have scheduled to destroy.
+* `sync` 队列包含同步作业。
+* `actions` 队列是一般的工作队列，并通常会含有预定任务，例如 promises.
+* `routerTransitions` 队列包含在路由器过渡工作.
+* `render` 队列包含的工作意味着渲染，这些通常会更新DOM。
+* `afterRender` 队列包含在所有先前计划的渲染任务完成之后运行的作业。这通常对于第三方DOM操作库很有用，只应在整个DOM树更新后才能运行。
+* `destroy` 队列包含完成其他计划销毁的对象的拆卸的作业。
 
-## In what order are jobs executed on the queues?
-The algorithm works this way:
+## In what order are jobs executed on the queues?(作业在队列上执行的顺序是什么？)
+该算法以这种方式工作：
 
-1. Let the highest priority queue with pending jobs be: `CURRENT_QUEUE`,
-if there are no queues with pending jobs the run loop is complete
-2. Let a new temporary queue be defined as `WORK_QUEUE`
-3. Move jobs from `CURRENT_QUEUE` into `WORK_QUEUE`
-4. Process all the jobs sequentially in `WORK_QUEUE`
-5. Return to Step 1
+1. 让具有挂起作业的最高优先级队列为：`CURRENT_QUEUE`,如果没有挂起作业的队列，则运行循环完成
+2. 让一个新的临时队列被定义为 `WORK_QUEUE`
+3. 将作业从 `CURRENT_QUEUE` 移入 `WORK_QUEUE`
+4. 按顺序处理所有作业在 `WORK_QUEUE`中
+5. 返回到步骤1
 
 ## An example of the internals
 

@@ -1,32 +1,22 @@
-Initializers provide an opportunity to configure your application as it boots.
+初始化器提供了一个在应用程序引导时配置应用程序的机会.
 
-There are two types of initializers: application initializers and application instance initializers.
+有两种类型的初始化程序：应用程序初始化程序和应用程序实例初始化程序。
 
-Application initializers are run as your application boots,
-and provide the primary means to configure [dependency injections](../dependency-injection) in your application.
+应用程序初始化程序在应用程序启动时运行，并提供在应用程序中配置 [依赖注入](../dependency-injection) 的主要方法.
 
-Application instance initializers are run as an application instance is loaded.
-They provide a way to configure the initial state of your application,
-as well as to set up dependency injections that are local to the application instance
-(e.g. A/B testing configurations).
+应用程序实例初始化程序在加载应用程序实例时运行。它们提供了一种配置应用程序初始状态的方法，以及设置应用程序实例本地的依赖注入（例如A / B测试配置）。
 
-Operations performed in initializers should be kept as lightweight as possible
-to minimize delays in loading your application.
-Although advanced techniques exist for allowing asynchrony in application initializers
-(i.e. `deferReadiness` and `advanceReadiness`), these techniques should generally be avoided.
-Any asynchronous loading conditions (e.g. user authorization) are almost always
-better handled in your application route's hooks,
-which allows for DOM interaction while waiting for conditions to resolve.
+在初始化程序中执行的操作应尽可能轻量化，以尽量减少加载应用程序的延迟。尽管在应用程序初始化中存在异步操作的高级技术，(例如 `deferReadiness` 和 `advanceReadiness`), 但通常应避免使用这些技术。任何异步加载条件（例如用户授权）在您的应用程序路由的钩子中几乎总是处理得更好，这允许在等待条件解决的同时进行DOM交互。
 
-## Application Initializers
+## Application Initializers(应用初始化程序)
 
-Application initializers can be created with Ember CLI's `initializer` generator:
+应用程序初始化器可以使用 Ember CLI的 `initializer` 生成器创建：
 
 ```bash
 ember generate initializer shopping-cart
 ```
 
-Let's customize the `shopping-cart` initializer to inject a `cart` property into all the routes in your application:
+让我们定制 `shopping-cart` 初始化程序，将 `cart` 属性注入到应用程序中的所有路由中：
 
 ```app/initializers/shopping-cart.js
 export function initialize(application) {
@@ -38,15 +28,15 @@ export default {
 };
 ```
 
-## Application Instance Initializers
+## Application Instance Initializers(应用程序实例初始化程序)
 
-Application instance initializers can be created with Ember CLI's `instance-initializer` generator:
+应用程序实例初始化器可以使用 Ember CLI的 `instance-initializer` 生成器创建：
 
 ```bash
 ember generate instance-initializer logger
 ```
 
-Let's add some simple logging to indicate that the instance has booted:
+让我们添加一些简单的日志记录来指示实例已启动：
 
 ```app/instance-initializers/logger.js
 export function initialize(applicationInstance) {
@@ -59,9 +49,9 @@ export default {
 };
 ```
 
-## Specifying Initializer Order
+## Specifying Initializer Order(指定初始化程序顺序)
 
-If you'd like to control the order in which initializers run, you can use the `before` and/or `after` options:
+如果您想控制初始化程序的运行顺序，可以使用 `before` 或 `after` 选项：
 
 ```app/initializers/config-reader.js
 export function initialize(application) {
@@ -96,12 +86,11 @@ export default {
 };
 ```
 
-Note that ordering only applies to initializers of the same type (i.e. application or application instance).
-Application initializers will always run before application instance initializers.
+请注意，排序仅适用于相同类型的初始化程序（即应用程序或应用程序实例）。应用程序初始化器总是在应用程序实例初始化器之前运行
 
-## Customizing Initializer Names
+## Customizing Initializer Names(自定义初始化程序名称)
 
-By default initializer names are derived from their module name. This initializer will be given the name `logger`:
+默认情况下，初始化程序名称是从它们的模块名称派生的. 这个初始化器将被命名为 `logger`:
 
 ```app/instance-initializers/logger.js
 export function initialize(applicationInstance) {
@@ -112,7 +101,7 @@ export function initialize(applicationInstance) {
 export default { initialize };
 ```
 
-If you want to change the name you can simply rename the file, but if needed you can also specify the name explicitly:
+如果您想更改名称，只需重命名该文件即可，但如果需要，还可以明确指定名称：
 
 ```app/instance-initializers/logger.js
 export function initialize(applicationInstance) {
@@ -126,4 +115,4 @@ export default {
 };
 ```
 
-This initializer will now have the name `my-logger`.
+此初始化程序现在将具有该名称 `my-logger`.
