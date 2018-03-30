@@ -135,29 +135,30 @@ Ember.run.queues
 4. 按顺序处理所有作业在 `WORK_QUEUE`中
 5. 返回到步骤1
 
-## An example of the internals
+## An example of the internals(内部的一个例子)
+
+我们没有编写内部调用各种运行循环调度功能的高级应用程序代码，而是剥离了封面，并显示了原始运行循环交互。
 
 Rather than writing the higher level app code that internally invokes the various run loop scheduling functions,
 we have stripped away the covers, and shown the raw run-loop interactions.
 
-Working with this API directly is not common in most Ember apps,
-but understanding this example will help you to understand the run-loops algorithm,
-which will make you a better Ember developer.
+直接使用此API在大多数Ember应用程序中并不常见，但理解此示例将帮助您了解运行循环算法，这将使您成为更好的Ember开发人员。
 
 <iframe src="https://s3.amazonaws.com/emberjs.com/run-loop-guide/index.html" width="678" height="410" style="border:1px solid rgb(170, 170, 170);margin-bottom:1.5em;"></iframe>
 
-## How do I tell Ember to start a run loop?
+## How do I tell Ember to start a run loop?(我如何告诉Ember开始运行循环？)
+
+当回调触发时，您应该开始运行循环。
 
 You should begin a run loop when the callback fires.
 
-The `Ember.run` method can be used to create a run loop.
-In this example, jQuery and `Ember.run` are used to handle a click event and run some Ember code.
+`Ember.run` 方法可用于创建运行循环。
+在这个例子中， jQuery 和 `Ember.run` 被用来处理一个点击事件和运行一些Ember代码。
 
-This example uses the `=>` function syntax, which is a [new ES2015 syntax for callback functions]
+本示例使用 `=>` 函数语法， 该语法是一种 [提供回调函数的新ES2015语法]
 (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-that provides a lexical `this`.
-If this syntax is new,
-think of it as a function that has the same `this` as the context it is defined in.
+它提供了一个词法 `this`.
+如果这个语法是新的，那么把它看作是一个函数， `this` 作为上下文被定义.
 
 ```javascript
 $('a').click(() => {
@@ -167,11 +168,10 @@ $('a').click(() => {
 });
 ```
 
-## What happens if I forget to start a run loop in an async handler?
+## What happens if I forget to start a run loop in an async handler?(如果我忘记在异步处理程序中启动运行循环会发生什么？)
 
-As mentioned above, you should wrap any non-Ember async callbacks in `Ember.run`.
-If you don't, Ember will try to approximate a beginning and end for you.
-Consider the following callback:
+如上所述，你应该把任何非Ember的异步调用放在 `Ember.run`中.如果你不这样做，Ember将为你尝试使用开始和结束几乎一致的方式（译者注：应该说的是同步的方法）。
+考虑以下回调：
 
 ```javascript
 $('a').click(() => {
@@ -183,12 +183,12 @@ $('a').click(() => {
 });
 ```
 
-The run loop API calls that _schedule_ work, i.e. [`run.schedule`](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop/methods/schedule?anchor=schedule),
+运行中的循环API调用 _schedule_ 工作, 例如 [`run.schedule`](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop/methods/schedule?anchor=schedule),
 [`run.scheduleOnce`](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop/methods/scheduleOnce?anchor=scheduleOnce),
-[`run.once`](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop/methods/once?anchor=once) have the property that they will approximate a run loop for you if one does not already exist.
-These automatically created run loops we call _autoruns_.
+[`run.once`](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop/methods/once?anchor=once) 如果内容不是已经存在，它们拥有近似于循环运行的特性（原文：have the property that they will approximate a run loop for you if one does not already exist.）
+这些自动创建的运行循环称为 _autoruns_.
 
-Here is some pseudocode to describe what happens using the example above:
+下面是使用上述示例描述发生的一些伪代码：
 
 ```javascript
 $('a').click(() => {
@@ -224,31 +224,20 @@ $('a').click(() => {
 });
 ```
 
-Although autoruns are convenient, they are suboptimal.
-The current JS frame is allowed to end before the run loop is flushed,
-which sometimes means the browser will take the opportunity to do other things, like garbage collection.
-GC running in between data changing and DOM rerendering can cause visual lag and should be minimized.
+尽管自动调整很方便，但它们并不理想。当前的JS框架允许在运行循环刷新之前结束运行，这有时意味着浏览器将有机会做其他事情，比如垃圾收集。在数据更改和DOM重新渲染之间运行的GC可能会导致视觉滞后，应尽量减少。
 
-Relying on autoruns is not a rigorous or efficient way to use the run loop.
-Wrapping event handlers manually are preferred.
+依靠autoruns不是使用运行循环的严格或有效的方式。手动封装事件处理程序是首选。
 
-## How is run loop behaviour different when testing?
+## How is run loop behaviour different when testing?(测试时运行循环行为有何不同？)
 
-When your application is in _testing mode_ then Ember will throw an error if you try to schedule work
-without an available run loop.
+当您的应用程序处于 _testing mode_ ，如果您尝试在没有可用运行循环的情况下安排工作，Ember将会抛出错误。
 
-Autoruns are disabled in testing for several reasons:
+Autoruns在测试中被禁用有几个原因：
 
-1. Autoruns are Embers way of not punishing you in production if you forget to open a run loop
-before you schedule callbacks on it.
-While this is useful in production, these are still situations that should be revealed in testing
-to help you find and fix them.
-2. Some of Ember's test helpers are promises that wait for the run loop to empty before resolving.
-If your application has code that runs _outside_ a run loop,
-these will resolve too early and give erroneous test failures which are difficult to find.
-Disabling autoruns help you identify these scenarios and helps both your testing and your application!
+1. Autoruns是Embers的一种方式，如果您在计划回调之前忘记打开运行循环，则不会在生产中惩罚您。虽然这在生产中很有用，但这些仍然应该在测试中显示，以帮助您找到并修复它们。
+2. Ember的一些测试助手承诺在解析之前等待运行循环清空。如果您的应用程序有运行在循环之 _外_ 的代码。这些代码会过早解决，并导致错误的测试失败，这些失败很难找到。
+禁用autoruns可帮助您识别这些场景并帮助您的测试和应用程序！
 
-## Where can I find more information?
+## Where can I find more information?(我在哪里可以找到更多信息？)
 
-Check out the [Ember.run](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop) API documentation,
-as well as the [Backburner library](https://github.com/ebryn/backburner.js/) that powers the run loop.
+查看 [Ember.run](https://www.emberjs.com/api/ember/release/classes/@ember%2Frunloop) 文档以及支持运行循环的 [Backburner  库](https://github.com/ebryn/backburner.js/)。
