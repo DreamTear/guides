@@ -1,19 +1,16 @@
-To define a component, run:
+要定义组件，请运行:
 
 ```shell
 ember generate component my-component-name
 ```
 
-Ember components are used to encapsulate markup and style into reusable content.
-Components consist of two parts: a JavaScript component file that defines behavior, and its accompanying Handlebars template that defines the markup for the component's UI.
+Ember组件用于将标记和样式封装为可重用内容。组件由两部分组成：一个用于定义行为的JavaScript组件文件，以及为组件的UI定义标记的随附Handlebars模板。
 
-Components must have at least one dash in their name. So `blog-post` is an acceptable
-name, and so is `audio-player-controls`, but `post` is not. This prevents clashes with
-current or future HTML element names, aligns Ember components with the W3C [Custom
+组件的名称中必须至少有一个破折号。 因此 `blog-post` 是一个可以接受的名字， `audio-player-controls`也是, 但是 `post` 不是. 这可以防止与当前或未来的HTML元素名称发生冲突， 将Ember组件与W3C [Custom
 Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)
-spec, and ensures Ember detects the components automatically.
+规范对齐， 并确保Ember自动检测组件。
 
-A sample component template could look like this:
+示例组件模板可能如下所示：
 
 ```app/templates/components/blog-post.hbs
 <article class="blog-post">
@@ -23,7 +20,7 @@ A sample component template could look like this:
 </article>
 ```
 
-Given the above template, you can now use the `{{blog-post}}` component:
+鉴于上述模板，您现在可以使用该 `{{blog-post}}` 组件：
 
 ```app/templates/index.hbs
 {{#each model as |post|}}
@@ -33,7 +30,7 @@ Given the above template, you can now use the `{{blog-post}}` component:
 {{/each}}
 ```
 
-Its model is populated in `model` hook in the route handler:
+它的模型 `model`在路由处理程序的钩子中填充：
 
 ```app/routes/index.js
 import Route from '@ember/routing/route';
@@ -45,48 +42,29 @@ export default Route.extend({
 });
 ```
 
-Each component is backed by an element under the hood. By default,
-Ember will use a `<div>` element to contain your component's template.
-To learn how to change the element Ember uses for your component, see
-[Customizing a Component's
-Element](../customizing-a-components-element).
+每个组件返回一个元素（原文：Each component is backed by an element under the hood. ）默认情况下，Ember将使用一个 `<div>` 元素来包含组件的模板。
+要了解如何更改Ember用于组件的元素， 请参阅
+[自定义组件的元素](../customizing-a-components-element).
 
 
-## Defining a Component Subclass
+## Defining a Component Subclass(定义组件子类)
 
-Often times, your components will just encapsulate certain snippets of
-Handlebars templates that you find yourself using over and over. In
-those cases, you do not need to write any JavaScript at all. Define
-the Handlebars template as described above and use the component that is
-created.
+很多时候， 你的组件会封装你发现自己反复使用的特定的Handlebars模板片段。在这些情况下，你根本不需要编写任何JavaScript。 如上所述定义Handlebars模板并使用创建的组件。
 
-If you need to customize the behavior of the component you'll
-need to define a subclass of [`Component`](https://www.emberjs.com/api/ember/release/classes/Component). For example, you would
-need a custom subclass if you wanted to change a component's element,
-respond to actions from the component's template, or manually make
-changes to the component's element using JavaScript.
+如果您需要自定义组件的行为，你需要定义 [`Component`](https://www.emberjs.com/api/ember/release/classes/Component)的子类. 例如，如果您想要更改组件的元素，响应组件的模板中的操作，或者使用JavaScript手动更改组件的元素，则需要自定义子类。
 
-Ember knows which subclass powers a component based on its filename. For
-example, if you have a component called `blog-post`, you would create a
-file at `app/components/blog-post.js`. If your component was called
-`audio-player-controls`, the file name would be at
+Ember通过文件名知道哪个类控制哪个组件. 例如，如果您有一个名为 `blog-post`的组件, 你将创建一个 `app/components/blog-post.js`文件. 如果你的组件名字叫
+`audio-player-controls`, 对应的文件名应该叫
 `app/components/audio-player-controls.js`.
 
-## Dynamically rendering a component
+## Dynamically rendering a component(动态渲染组件)
 
-The [`{{component}}`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) helper can be used to defer the selection of a component to
-run time. The `{{my-component}}` syntax always renders the same component,
-while using the `{{component}}` helper allows choosing a component to render on
-the fly. This is useful in cases where you want to interact with different
-external libraries depending on the data. Using the `{{component}}` helper would
-allow you to keep different logic well separated.
+[`{{component}}`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) 助手可以用来推迟组件的运行时间.  `{{my-component}}` 语法总是呈现相同的部件，
+当使用 `{{component}}` 助手，允许动态的选择一个组件去渲染. 这在您想根据数据与不同的外部库进行交互的情况下很有用。使用 `{{component}}` 助手可以让你保持不同的逻辑分开。
 
-The first parameter of the helper is the name of a component to render, as a
-string. So `{{component 'blog-post'}}` is the same as using `{{blog-post}}`.
+帮助器的第一个参数是要呈现的组件的名称的字符串. 因此 `{{component 'blog-post'}}` 和使用 `{{blog-post}}`一样.
 
-The real value of [`{{component}}`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) comes from being able to dynamically pick
-the component being rendered. Below is an example of using the helper as a
-means of choosing different components for displaying different kinds of posts:
+ [`{{component}}`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) 真正的价值来自于能够动态地选择将要渲染的组件。以下是使用助手作为选择不同组件以显示不同类型帖子的手段的示例：
 
 ```app/templates/components/foo-component.hbs
 <h3>Hello from foo!</h3>
@@ -115,10 +93,7 @@ export default Route.extend({
 {{/each}}
 ```
 
-When the parameter passed to `{{component}}` evaluates to `null` or `undefined`,
-the helper renders nothing. When the parameter changes, the currently rendered
-component is destroyed and the new component is created and brought in.
+当传递的参数 `{{component}}` 等于 `null` 或者 `undefined`,
+帮助器不渲染任何内容。当参数改变时，当前渲染的组件被销毁并且新组件被创建并被引入。
 
-Picking different components to render in response to the data allows you to
-have different template and behavior for each case. The `{{component}}` helper
-is a powerful tool for improving code modularity.
+根据数据选择不同的组件进行渲染，可以让您针对每种情况制定不同的模板和行为. `{{component}}` 助手是提高代码的模块化的强大工具。
