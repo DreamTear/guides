@@ -50,7 +50,7 @@ app.import('bower_components/ic-ajax/dist/named-amd/main.js', {
 });
 ```
 
-你闲杂i可以在你的app中 `import` 他们。 (例如 `import { raw as icAjaxRaw } from 'ic-ajax';`)
+你现在可以在你的app中 `import` 他们。 (例如 `import { raw as icAjaxRaw } from 'ic-ajax';`)
 
 ### Environment-Specific Assets(环境特定资产)
 
