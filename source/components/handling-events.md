@@ -1,8 +1,6 @@
-You can respond to user events on your component like double-clicking, hovering,
-and key presses through event handlers. Simply implement the name of the event
-you want to respond to as a method on your component.
+您可以响应组件上的用户事件，如双击、鼠标悬停、和键盘事件。只需在组件上实现要作为响应的事件的名称即可。
 
-For example, imagine we have a template like this:
+例如，假设我们有一个这样的模板：
 
 ```hbs
 {{#double-clickable}}
@@ -10,8 +8,7 @@ For example, imagine we have a template like this:
 {{/double-clickable}}
 ```
 
-Let's implement `double-clickable` such that when it is
-clicked, an alert is displayed:
+当它被点击时，我们让`double-clickable` 显示一个警告：
 
 ```app/components/double-clickable.js
 import Component from '@ember/component';
@@ -23,9 +20,7 @@ export default Component.extend({
 });
 ```
 
-Browser events may bubble up the DOM which potentially target parent component(s)
-in succession. To enable bubbling `return true;` from the event handler method
-in your component.
+浏览器的事件冒泡可能会将事件传递到父组件中。 在组件事件处理函数中 `return true;` 来使事件可以冒泡.
 
 ```app/components/double-clickable.js
 import Component from '@ember/component';
@@ -39,22 +34,17 @@ export default Component.extend({
 });
 ```
 
-See the list of event names at the end of this page. Any event can be defined
-as an event handler in your component.
+请参阅本页末尾的事件名称列表。任何事件都可以在组件中定义事件处理程序。
 
-## Sending Actions
+## Sending Actions(发送操作)
 
-In some cases your component needs to define event handlers, perhaps to support
-various draggable behaviors. For example, a component may need to send an `id`
-when it receives a drop event:
+在某些情况下，你的组件需要定义事件处理程序，可能是为了支持各种可拖动的行为。 例如，组件可能需要在收到放置事件时传递 `id`：
 
 ```hbs
 {{drop-target action=(action "didDrop")}}
 ```
 
-You can define the component's event handlers to manage the drop event.
-And if you need to, you may also stop events from bubbling, by using
-`return false;`.
+您可以定义组件的事件处理程序来管理放置事件。如果你需要，你也可以通过使用`return false;`来阻止事件冒泡.
 
 ```app/components/drop-target.js
 import Component from '@ember/component';
@@ -74,22 +64,15 @@ export default Component.extend({
 });
 ```
 
-In the above component, `didDrop` is the `action` passed in. This action is
-called from the `drop` event handler and passes one argument to the action -
-the `id` value found through the `drop` event object.
+在上面的组件中， `didDrop` 是 `action` 传入的。 这个动作是从 `drop` 事件处理程序调用的，并将一个参数传递给动作 -   通过`drop` 事件对象找到`id`的值.
 
-
-Another way to preserve native event behaviors and use an action, is to
-assign a (closure) action to an inline event handler. Consider the
-template below which includes an `onclick` handler on a `button` element:
+另一种保存本地事件行为并使用动作的方法是分配一个行内的行为。考虑下面的模板，其中包含元素`button`的  `onclick`处理函数:
 
 ```hbs
 <button onclick={{action "signUp"}}>Sign Up</button>
 ```
 
-The `signUp` action is simply a function defined on the `actions` hash
-of a component. Since the action is assigned to an inline handler, the
-function definition can define the event object as its first parameter.
+`signUp`只是组件散列`actions`中的一个。由于该操作被分配给内联处理函数，函数定义可以将事件对象定义为其第一个参数。
 
 ```js
 actions: {
@@ -100,10 +83,7 @@ actions: {
 }
 ```
 
-The normal behavior for a function defined in `actions` does not receive the
-browser event as an argument. So, the function definition for the action cannot
-define an event parameter. The following example demonstrates the
-default behavior using an action.
+定义在`actions`中的方法，正常情况下是不会接收到浏览器事件作为参数. 所以，该动作的函数定义不能定义一个事件参数。 以下示例演示了使用操作的默认行为。
 
 ```hbs
 <button {{action "signUp"}}>Sign Up</button>
@@ -117,34 +97,30 @@ actions: {
 }
 ```
 
-To utilize an `event` object as a function parameter:
+要将 `event` 对象用作函数参数：
 
-- Define the event handler in the component (which is designed to receive the
-  browser event object).
-- Or, assign an action to an inline event handler in the template (which
-  creates a closure action and does receive the event object as an argument).
+- 在组件中定义事件处理函数(用于接收浏览器事件对象).
+- 或者，为模板中的内联事件处理程序分配一个操作（创建一个闭包操作并将事件对象作为参数接收）。
 
 
-## Event Names
+## Event Names(事件名称)
 
-The event handling examples described above respond to one set of events.
-The names of the built-in events are listed below. Custom events can be
-registered by using [Application.customEvents](https://www.emberjs.com/api/ember/release/classes/Application/properties/customEvents?anchor=customEvents).
+上面描述的事件处理示例响应一组事件。下面列出了内置事件的名称。自定义事件可以使用 [Application.customEvents](https://www.emberjs.com/api/ember/release/classes/Application/properties/customEvents?anchor=customEvents)进行注册。
 
-Touch events:
+触摸事件：
 
 * `touchStart`
 * `touchMove`
 * `touchEnd`
 * `touchCancel`
 
-Keyboard events
+键盘事件
 
 * `keyDown`
 * `keyUp`
 * `keyPress`
 
-Mouse events
+鼠标事件
 
 * `mouseDown`
 * `mouseUp`
@@ -157,7 +133,7 @@ Mouse events
 * `mouseEnter`
 * `mouseLeave`
 
-Form events:
+表单事件:
 
 * `submit`
 * `change`
@@ -165,7 +141,7 @@ Form events:
 * `focusOut`
 * `input`
 
-HTML5 drag and drop events:
+HTML5拖放事件:
 
 * `dragStart`
 * `drag`
