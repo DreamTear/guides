@@ -1,14 +1,13 @@
-Part of what makes components so useful is that they let you take complete control of a section of the DOM.
-This allows for direct DOM manipulation, listening and responding to browser events, and using 3rd party JavaScript libraries in your Ember app.
+让组件如此有用的部分原因是它们让你完全控制组件的DOM。这允许你直接操作DOM，监听和响应浏览器事件或者在你的Ember应用中使用第三方Javascript库。
 
-As components are rendered, re-rendered and finally removed, Ember provides _lifecycle hooks_ that allow you to run code at specific times in a component's life.
+随着组件被渲染，重新渲染并最终被移除，Ember提供了允许在组件生命周期的特定时间运行代码的 _lifecycle hooks_ .
 
-To get the most use out of a component, it is important to understand these lifecycle methods.
+为了充分利用组件，了解这些生命周期方法非常重要。
 
-## Order of Lifecycle Hooks Called
-Listed below are the component lifecycle [hooks](../../getting-started/core-concepts/#toc_hooks) in order of execution according to render scenario.
+## Order of Lifecycle Hooks Called(调用生命周期钩子的顺序)
+下面列出了根据渲染场景执行的组件生命周期 [hooks](../../getting-started/core-concepts/#toc_hooks).
 
-### On Initial Render
+### On Initial Render(在初始渲染阶段)
 
 1. `init`
 2. [`didReceiveAttrs`](#toc_formatting-component-attributes-with-code-didreceiveattrs-code)
@@ -16,7 +15,7 @@ Listed below are the component lifecycle [hooks](../../getting-started/core-conc
 4. [`didInsertElement`](#toc_integrating-with-third-party-libraries-with-code-didinsertelement-code)
 5. [`didRender`](#toc_making-updates-to-the-rendered-dom-with-code-didrender-code)
 
-### On Re-Render
+### On Re-Render(在重新渲染阶段)
 
 1. [`didUpdateAttrs`](#toc_resetting-presentation-state-on-attribute-change-with-code-didupdateattrs-code)
 2. [`didReceiveAttrs`](#toc_formatting-component-attributes-with-code-didreceiveattrs-code)
@@ -25,26 +24,23 @@ Listed below are the component lifecycle [hooks](../../getting-started/core-conc
 5. `didUpdate`
 6. [`didRender`](#toc_making-updates-to-the-rendered-dom-with-code-didrender-code)
 
-### On Component Destroy
+### On Component Destroy(在组件销毁阶段)
 
 1. [`willDestroyElement`](#toc_detaching-and-tearing-down-component-elements-with-code-willdestroyelement-code)
 2. `willClearRender`
 3. `didDestroyElement`
 
-## Lifecycle Hook Examples
+## Lifecycle Hook Examples(生命周期钩子示例)
 
-Below are some samples of ways to use lifecycle hooks within your components.
+以下是在组件中使用生命周期钩子的一些示例。
 
-### Resetting Presentation State on Attribute Change with `didUpdateAttrs`
+### Resetting Presentation State on Attribute Change with `didUpdateAttrs`(当属性改变时使用`didUpdateAttrs`来重置显示状态)
 
-`didUpdateAttrs` runs when the attributes of a component have changed, but not when the component is re-rendered, via `component.rerender`,
-`component.set`, or changes in models or services used by the template.
+`didUpdateAttrs` 运行时组件的属性发生了变化，而不是当组件由于`component.rerender`、`component.set`或者应用与模板的model或服务变化引起的重新渲染时。
 
-Since `didUpdateAttrs` is called prior to rerender, you can use this hook to execute code when specific attributes are changed.
-This hook can be an effective alternative to an observer, as it will run prior to a re-render, but after an attribute has changed.
+由于 `didUpdateAttrs` 在重新渲染之前调用，因此可以使用此钩子在特定属性发生更改时执行代码。这个钩子可以成为观察者的有效替代品，因为它将在属性发生变化之后，重新渲染之前运行。
 
-An example of this scenario in action is a profile editor component.  As you are editing one user, and the user attribute is changed,
-you can use `didUpdateAttrs` to clear any error state that was built up from editing the previous user.
+这个场景的一个例子是配置文件编辑器组件。An example of this scenario in action is a profile editor component.  在您编辑一个用户时，用户属性发生更改时，你可以使用`didUpdateAttrs`去清除，在编辑之前，用户所产生的任何错误状态.
 
 ```app/templates/components/profile-editor.hbs
 <ul class="errors">
@@ -83,9 +79,9 @@ export default Component.extend({
 });
 ```
 
-### Formatting Component Attributes with `didReceiveAttrs`
+### Formatting Component Attributes with `didReceiveAttrs`(使用`didReceiveAttrs`格式化组件属性)
 
-`didReceiveAttrs` runs after `init`, and it also runs on subsequent re-renders, which is useful for logic that is the same on all renders.
+`didReceiveAttrs` 运行在 `init`之后, 它也在后续的重新渲染上运行，这对于所有渲染中相同的逻辑非常有用。重新渲染在内部启动时不会运行。
 It does not run when the re-render has been initiated internally.
 
 Since the `didReceiveAttrs` hook is called every time a component's attributes are updated whether on render or re-render,

@@ -1,8 +1,6 @@
-Components are isolated from their surroundings, so any data that the component
-needs has to be passed in.
+组件与周围环境隔离，因此组件所需的任何数据都必须传入。
 
-For example, imagine you have a `blog-post` component that is used to
-display a blog post:
+例如，假设您有一个 `blog-post` 组件用于显示博客文章:
 
 ```app/templates/components/blog-post.hbs
 <article class="blog-post">
@@ -11,7 +9,7 @@ display a blog post:
 </article>
 ```
 
-Now imagine we have the following template and route:
+现在想象我们有以下模板和路由：
 
 ```app/routes/index.js
 import Route from '@ember/routing/route';
@@ -23,7 +21,7 @@ export default Route.extend({
 });
 ```
 
-If we tried to use the component like this:
+如果我们试图这样使用组件：
 
 ```app/templates/index.hbs
 {{#each model as |post|}}
@@ -31,7 +29,7 @@ If we tried to use the component like this:
 {{/each}}
 ```
 
-The following HTML would be rendered:
+将呈现以下HTML：
 
 ```html
 <article class="blog-post">
@@ -40,8 +38,7 @@ The following HTML would be rendered:
 </article>
 ```
 
-In order to make a property available to a component, you must pass it
-in like this:
+为了使组件可用，您必须像这样传递它：
 
 ```app/templates/index.hbs
 {{#each model as |post|}}
@@ -49,15 +46,11 @@ in like this:
 {{/each}}
 ```
 
-It is important to note that these properties stay in sync (technically
-known as being "bound"). That is, if the value of `componentProperty`
-changes in the component, `outerProperty` will be updated to reflect that
-change. The reverse is true as well.
+重要的是要注意这些属性保持同步（技术上称为“绑定”）。 也就是说，如果 `componentProperty`的值在组件中改变, `outerProperty` 将被更新以反映那个变化. 反过来也是如此。
 
-## Positional Params
+## Positional Params(位置参数)
 
-In addition to passing parameters in by name, you can pass them in by position.
-In other words, you can invoke the above component example like this:
+除了按名称传递参数之外，还可以按位置传递参数。换句话说，您可以像这样调用上述组件示例：
 
 ```app/templates/index.hbs
 {{#each model as |post|}}
@@ -65,8 +58,7 @@ In other words, you can invoke the above component example like this:
 {{/each}}
 ```
 
-To set the component up to receive parameters this way, you need to
-set the [`positionalParams`](https://www.emberjs.com/api/ember/release/classes/Component/properties/positionalParams?anchor=positionalParams) attribute in your component class.
+要将组件设置为以这种方式接收参数， 您需要在组件中设置 [`positionalParams`](https://www.emberjs.com/api/ember/release/classes/Component/properties/positionalParams?anchor=positionalParams) 属性.
 
 ```app/components/blog-post.js
 import Component from '@ember/component';
@@ -76,16 +68,11 @@ export default Component.extend({}).reopenClass({
 });
 ```
 
-Then you can use the attributes in the component exactly as if they had been
-passed in like `{{blog-post title=post.title body=post.body}}`.
+然后你可以像使用 `{{blog-post title=post.title body=post.body}}`时一样使用组件中的属性.
 
-Notice that the `positionalParams` property is added to the class as a
-static variable via `reopenClass`. Positional params are always declared on
-the component class and cannot be changed while an application runs.
+请注意， `positionalParams` 属性作为静态变量通过`reopenClass`添加到类中。 位置参数总是在组件类上声明，并且在应用程序运行时不能更改。
 
-Alternatively, you can accept an arbitrary number of parameters by
-setting `positionalParams` to a string, e.g. `positionalParams: 'params'`. This
-will allow you to access those params as an array like so:
+或者，您可以通过设置 `positionalParams` 为字符串来接受任意数量的参数， 例如 `positionalParams: 'params'`. 这将允许你接收这些参数作为一个数组，像下面一样:
 
 ```app/components/blog-post.js
 import Component from '@ember/component';
