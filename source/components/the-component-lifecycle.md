@@ -84,11 +84,9 @@ export default Component.extend({
 `didReceiveAttrs` 运行在 `init`之后, 它也在后续的重新渲染上运行，这对于所有渲染中相同的逻辑非常有用。重新渲染在内部启动时不会运行。
 It does not run when the re-render has been initiated internally.
 
-Since the `didReceiveAttrs` hook is called every time a component's attributes are updated whether on render or re-render,
-you can use the hook to effectively act as an observer, ensuring code is executed every time an attribute changes.
+由于每次在渲染或重新渲染时更新组件的属性都会调用`didReceiveAttrs`钩子，因此可以使用钩子来有效地充当观察者，确保每次属性更改时都执行代码。
 
-For example, if you have a component that renders based on a json configuration, but you want to provide your component with the option of taking the config as a string,
-you can leverage `didReceiveAttrs` to ensure the incoming config is always parsed.
+例如，如果您有一个基于json配置呈现的组件，但您希望为组件提供将配置作为字符串的选项，则可以利用`didReceiveAttrs`来确保始终分析传入配置。
 
 ```app/components/profile-editor.js
 import Component from '@ember/component';
@@ -106,24 +104,19 @@ export default Component.extend({
 });
 ```
 
-### Integrating with Third-Party Libraries with `didInsertElement`
+### Integrating with Third-Party Libraries with `didInsertElement`(使用`didInsertElement`与第三方库集成在一起)
 
-Suppose you want to integrate your favorite date picker library into an Ember project.
-Typically, 3rd party JS/jQuery libraries require a DOM element to bind to.
-So, where is the best place to initialize and attach the library?
+假设你想将你最喜欢的日期选择器库集成到Ember项目中。通常，第三方JS / jQuery库需要一个DOM元素。那么，初始化和附加库的最佳位置在哪里呢？
 
-After a component successfully renders its backing HTML element into the DOM, it will trigger its [`didInsertElement()`][did-insert-element] hook.
+组件成功将其HTML元素渲染到DOM后，将触发[`didInsertElement()`][did-insert-element]钩子。
 
-Ember guarantees that, by the time `didInsertElement()` is called:
+Ember在`didInsertElement()`被调用时保证：
 
-1. The component's element has been both created and inserted into the
-   DOM.
-2. The component's element is accessible via the component's
-   [`$()`][dollar]
-   method.
+1. 组件的元素被创建并且插入到DOM中.
+2. 组件的元素可以通过组件的[`$()`][dollar]方法访问 。
 
-A component's [`$()`][dollar] method allows you to access the component's DOM element by returning a JQuery element.
-For example, you can set an attribute using jQuery's `attr()` method:
+组件的 [`$()`][dollar] 方法允许您通过返回JQuery元素来访问组件的DOM元素。
+例如，您可以使用jQuery的 `attr()` 方法设置一个属性:
 
 ```app/components/profile-editor.js
 import Component from '@ember/component';
@@ -136,7 +129,7 @@ export default Component.extend({
 });
 ```
 
-[`$()`][dollar] will, by default, return a jQuery object for the component's root element, but you can also target child elements within the component's template by passing a selector:
+[`$()`][dollar] 默认情况下，会为组件的根元素返回一个jQuery对象，但是您还可以通过传递一个选择器来定位组件模板中的子元素:
 
 ```app/components/profile-editor.js
 import Component from '@ember/component';
@@ -149,9 +142,9 @@ export default Component.extend({
 });
 ```
 
-Let's initialize our date picker by overriding the [`didInsertElement()`][did-insert-element] method.
+我们通过重写 [`didInsertElement()`][did-insert-element] 方法来初始化我们的日期选择器。
 
-Date picker libraries usually attach to an `<input>` element, so we will use jQuery to find an appropriate input within our component's template.
+日期选择器库通常附加到一个 `<input>` 元素, 所以我们将使用jQuery在我们的组件模板中找到合适的输入。
 
 ```app/components/profile-editor.js
 import Component from '@ember/component';
@@ -164,13 +157,9 @@ export default Component.extend({
 });
 ```
 
-[`didInsertElement()`][did-insert-element] is also a good place to
-attach event listeners. This is particularly useful for custom events or
-other browser events which do not have a [built-in event
-handler][event-names].
+[`didInsertElement()`][did-insert-element] 也是附加事件监听器的好地方。这对于没有 [内置事件处理程序][event-names]的自定义事件或其他浏览器事件特别有用。
 
-For example, perhaps you have some custom CSS animations trigger when the component
-is rendered and you want to handle some cleanup when it ends:
+例如，也许你有一些自定义的CSS动画在组件被渲染时触发，在结束时做一些清理:
 
 ```app/components/profile-editor.js
 import Component from '@ember/component';
@@ -185,23 +174,20 @@ export default Component.extend({
 });
 ```
 
-There are a few things to note about the `didInsertElement()` hook:
+有关 `didInsertElement()` 钩子的一些事情需要注意:
 
-- It is only triggered once when the component element is first rendered.
-- In cases where you have components nested inside other components, the child component will always receive the `didInsertElement()` call before its parent does.
-- Setting properties on the component in [`didInsertElement()`][did-insert-element] triggers a re-render, and for performance reasons,
-  is not allowed.
-- While [`didInsertElement()`][did-insert-element] is technically an event that can be listened for using `on()`, it is encouraged to override the default method itself,
-  particularly when order of execution is important.
+- 只有在组件元素第一次呈现时才会触发一次。
+- 在组件嵌套在其他组件内的情况下，子组件将始终在它的父组件之前调用 `didInsertElement()` 。
+- 在 [`didInsertElement()`][did-insert-element] 中设置组件中的属性会触发重新渲染，并且出于性能方面的考虑，这是不允许的。
+- 虽然 [`didInsertElement()`][did-insert-element] 从技术上讲是可以使用`on()`监听，但鼓励重写默认方法本身，特别是在执行顺序很重要时。
 
 [did-insert-element]: https://www.emberjs.com/api/ember/release/classes/Component/events/didInsertElement?anchor=didInsertElement
 [dollar]: https://www.emberjs.com/api/ember/release/classes/Component/methods/$?anchor=%24
 [event-names]: http://guides.emberjs.com/v2.1.0/components/handling-events/#toc_event-names
 
-### Making Updates to the Rendered DOM with `didRender`
+### Making Updates to the Rendered DOM with `didRender`(更新已经渲染的DOM使用`didRender`)
 
-The `didRender` hook is called during both render and re-render after the template has rendered and the DOM updated.
-You can leverage this hook to perform post-processing on the DOM of a component after it's been updated.
+ `didRender` 在模板渲染和DOM更新后，在渲染和重新渲染过程中调用该钩子。您可以利用此挂钩在组件的DOM更新后对其执行后处理。
 
 In this example, there is a list component that needs to scroll to a selected item when rendered.
 Since scrolling to a specific spot is based on positions within the DOM, we need to ensure that the list has been rendered before scrolling.
