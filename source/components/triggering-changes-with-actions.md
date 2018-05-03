@@ -1,23 +1,12 @@
-You can think of a component as a black box of UI functionality.
-So far, you've learned how parent components can pass attributes in to a
-child component, and how that component can use those attributes from
-both JavaScript and its template.
+您可以将组件视为UI功能的黑盒子。到目前为止，您已经学习了父组件如何将属性传递给子组件，以及该组件如何使用JavaScript及其模板中的这些属性。
 
-But what about the opposite direction? How does data flow back out of
-the component to the parent? In Ember, components use **actions** to
-communicate events and changes.
+但是相反的方向呢？数据如何从组件流回父级？在Ember中，组件使用 **actions** 来传达事件和更改。
 
-Let's look at a simple example of how a component can use an action to
-communicate with its parent.
+我们来看一个组件如何使用一个动作与其父代进行通信的简单示例。
 
-Imagine we're building an application where users can have accounts. We
-need to build the UI for users to delete their account. Because we don't
-want users to accidentally delete their accounts, we'll build a button
-that requires the user to confirm in order to trigger some
-action.
+想象一下，我们正在构建一个用户可以拥有账户的应用程序。我们需要为用户构建用户界面以删除其帐户。由于我们不希望用户意外删除其帐户，因此我们将构建一个按钮，要求用户确认才能触发某些操作。
 
-Once we create this "button with confirmation"
-component, we want to be able to reuse it all over our application.
+一旦我们创建了“确认按钮”组件，我们希望能够在我们的应用程序中重用它。
 
 ## Creating the Component
 
@@ -448,7 +437,7 @@ export default Component.extend({
 
 ## Calling Actions Up Multiple Component Layers
 
-When your components go multiple template layers deep, it is common to need to handle an action several layers up the tree. 
+When your components go multiple template layers deep, it is common to need to handle an action several layers up the tree.
 Using the action helper, parent components can pass actions to child components through templates alone without adding JavaScript code to those child components.
 
 For example, say we want to move account deletion from the `user-profile` component to its parent `system-preferences-editor`.

@@ -189,18 +189,15 @@ export default Component.extend({
 
  `didRender` 在模板渲染和DOM更新后，在渲染和重新渲染过程中调用该钩子。您可以利用此挂钩在组件的DOM更新后对其执行后处理。
 
-In this example, there is a list component that needs to scroll to a selected item when rendered.
-Since scrolling to a specific spot is based on positions within the DOM, we need to ensure that the list has been rendered before scrolling.
-We can first render this list, and then set the scroll.
+在这个例子中，有一个列表组件需要在渲染时滚动到选定的项目。由于滚动到特定位置是基于DOM内的位置，因此我们需要确保列表在滚动前已经被渲染。我们可以先渲染这个列表，然后设置滚动条。
 
-The component below takes a list of items and displays them on the screen.
-Additionally, it takes an object representing which item is selected and will select and set the scroll top to that item.
+下面的组件获取项目列表并将它们显示在屏幕上。此外，它需要一个对象来表示选择哪个项目，然后选中并将滚动条滚动到这个列表项。
 
 ```app/templates/application.hbs
 {{selected-item-list items=items selectedItem=selection}}
 ```
 
-When rendered the component will iterate through the given list and apply a class to the one that is selected.
+呈现时，组件将遍历给定列表并将class添加到选定的项目上。
 
 
 ```app/templates/components/selected-item-list.hbs
@@ -209,7 +206,7 @@ When rendered the component will iterate through the given list and apply a clas
 {{/each}}
 ```
 
-The scroll happens on `didRender`, where it will scroll the component's container to the element with the selected class name.
+当`didRender`时，组件的容器将滚动到所选class的元素。
 
 ```/app/components/selected-item-list.js
 import Component from '@ember/component';
@@ -234,13 +231,11 @@ export default Component.extend({
 });
 ```
 
-### Detaching and Tearing Down Component Elements with `willDestroyElement`
+### Detaching and Tearing Down Component Elements with `willDestroyElement`(分离和拆卸组件元素在`willDestroyElement`)
 
-When a component detects that it is time to remove itself from the DOM, Ember will trigger the [`willDestroyElement()`](https://www.emberjs.com/api/ember/release/classes/Component/events/willDestroyElement?anchor=willDestroyElement) method,
-allowing for any teardown logic to be performed.
+当组件检测到是时候从DOM中移除它时，Ember将触发该[`willDestroyElement()`](https://www.emberjs.com/api/ember/release/classes/Component/events/willDestroyElement?anchor=willDestroyElement)方法，从而允许执行任何拆卸逻辑。
 
-Component teardown can be triggered by a number of different conditions.
-For instance, the user may navigate to a different route, or a conditional Handlebars block surrounding your component may change:
+部件拆卸可以由许多不同的条件触发。例如，用户可能导航到不同的路线，或者围绕您的组件的条件Handlebars块可能会改变：
 
 ```app/templates/application.hbs
 {{#if falseBool}}
@@ -248,7 +243,7 @@ For instance, the user may navigate to a different route, or a conditional Handl
 {{/if}}
 ```
 
-Let's use this hook to cleanup our date picker and event listener from above:
+让我们使用这个钩子从上面清理我们的日期选择器和事件监听器：
 
 ```app/components/profile-editor.js
 import Component from '@ember/component';
