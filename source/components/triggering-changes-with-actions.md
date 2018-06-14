@@ -8,16 +8,15 @@
 
 一旦我们创建了“确认按钮”组件，我们希望能够在我们的应用程序中重用它。
 
-## Creating the Component
+## Creating the Component（创建组件）
 
-Let's call our component `button-with-confirmation`. We can create it by
-typing:
+我们来创建我们的组件 `button-with-confirmation`. 我们可以通过键入以下命令:
 
 ```shell
 ember generate component button-with-confirmation
 ```
 
-We'll plan to use the component in a template something like this:
+我们打算在模板中使用这个组件，如下所示:
 
 ```app/templates/components/user-profile.hbs
 {{button-with-confirmation
@@ -25,7 +24,7 @@ We'll plan to use the component in a template something like this:
 }}
 ```
 
-We'll also want to use the component elsewhere, perhaps like this:
+我们也想在其他地方使用该组件，可能是这样的:
 
 ```app/templates/components/send-message.hbs
 {{button-with-confirmation
@@ -33,39 +32,26 @@ We'll also want to use the component elsewhere, perhaps like this:
 }}
 ```
 
-## Designing the Action
+## Designing the Action（设计动作）
 
-When implementing an action on a component that will be handled outside the component, you need to break it down into two steps:
+在对组件外部处理的组件执行操作时，需要将其分解为两个步骤:
 
-1. In the parent component, decide how you want to react to the action.
-   Here, we want to have the action delete the user's account when it's used in one place, and
-   send a message when used in another place.
-2. In the component, determine when something has happened, and when to tell the
-   outside world. Here, we want to trigger the outside action (deleting the
-   account or sending the message) after the user clicks the button and then
-   confirms.
+1. 在父组件中，决定如何对动作做出反应。在这里，我们希望在一个地方使用该用户的帐户时删除该用户的帐户，并在另一个地方使用时发送消息。
+2. 在组件中，确定什么时候发生了什么，以及何时告诉外部世界。 在这里，我们想要在用户点击按钮并确认后触发外部操作（删除账户或发送消息）。
 
-Let's take it step by step.
+让我们一步一步来。
 
-## Implementing the Action
+## Implementing the Action(实施行动)
 
-In the parent component, let's first define what we want to happen when the
-user clicks the button and then confirms. In the first case, we'll find the user's
-account and delete it.
+在父组件中，我们首先定义当用户单击按钮并确认后我们想要发生的事情。 在第一种情况下，我们会找到用户的帐户并将其删除。
 
-In Ember, each component can
-have a property called `actions`, where you put functions that can be
-[invoked by the user interacting with the component
-itself](../../templates/actions/), or by child components.
+在Ember中，每个组件都可以拥有一个名为 `actions`的属性, 您可以在其中放置
+[可由用户与组件本身交互](../../templates/actions/), 或由子组件与其进行交互的函数.
 
-Let's look at the parent component's JavaScript file. In this example,
-imagine we have a parent component called `user-profile` that shows the
-user's profile to them.
+我们来看看父组件的JavaScript文件。在这个例子中，假设我们有一个父组件 `user-profile` ，它向用户显示了用户的配置文件。
 
-We'll implement an action on the parent component called
-`userDidDeleteAccount()` that, when called, gets a hypothetical `login`
-[service](../../applications/services/) and calls the service's
-`deleteUser()` method.
+我们在父组件中提供一个`userDidDeleteAccount()`方法，当它被调用时，假设从  `login`
+[服务](../../applications/services/) 中调用`deleteUser()` 方法。
 
 ```app/components/user-profile.js
 import Component from '@ember/component';
@@ -82,13 +68,11 @@ export default Component.extend({
 });
 ```
 
-Now we've implemented our action, but we have not told Ember when we
-want this action to be triggered, which is the next step.
+现在我们已经实施了我们的行动，但是我们还没有告诉Ember我们想让它什么时候被触发，这是下一步要做的。
 
-## Designing the Child Component
+## Designing the Child Component(设计子组件)
 
-Next,
-in the child component we will implement the logic to confirm that the user wants to take the action they indicated by clicking the button:
+接下来，在子组件中，我们将执行逻辑以确认用户想要通过单击按钮来执行他们指示的操作:
 
 ```app/components/button-with-confirmation.js
 import Component from '@ember/component';
@@ -111,8 +95,7 @@ export default Component.extend({
 });
 ```
 
-The component template will have a button and a div that shows the confirmation dialog
-based on the value of `confirmShown`.
+组件模板将有一个按钮和一个显示基于值`confirmShown`的确认对话框。
 
 ```app/templates/components/button-with-confirmation.hbs
 <button {{action "launchConfirmDialog"}}>{{text}}</button>
@@ -124,12 +107,10 @@ based on the value of `confirmShown`.
 {{/if}}
 ```
 
-## Passing the Action to the Component
+## Passing the Action to the Component(将操作传递给组件)
 
-Now we need to make it so that the `userDidDeleteAccount()` action defined in the parent component `user-profile` can be triggered from within `button-with-confirmation`.
-We'll do this by passing the action to the child component in exactly the same way that we pass other properties.
-This is possible since actions are simply functions, just like any other method on a component,
-and they can therefore be passed from one component to another like this:
+现在我们需要做到这一点，在父组件`user-profile`中定义的action`userDidDeleteAccount()`可以被`button-with-confirmation`触发。
+我们将通过以与传递其他属性完全相同的方式将action传递给子组件来完成此操作。这是可能的，因为动作只是函数，就像组件上的其他方法一样，因此它们可以像下面这样从一个组件传递到另一个组件：
 
 ```app/templates/components/user-profile.hbs
 {{button-with-confirmation
@@ -138,11 +119,10 @@ and they can therefore be passed from one component to another like this:
 }}
 ```
 
-This snippet says "take the `userDidDeleteAccount` action from the parent and make it available on the child component as the property `onConfirm`."
-Note the use here of the `action` helper,
-which serves to return the function named `"userDidDeleteAccount"` that we are passing to the component.
+这段代码的意思是 "从父组件中获取action `userDidDeleteAccount` 并将它作为子组件的`onConfirm`属性传递给子组件."
+请注意这里使用的 `action` helper,它用于给组件传递名字为`"userDidDeleteAccount"`的方法。
 
-We can do a similar thing for our `send-message` component:
+我们可以为我们的 `send-message` 组件做类似的事情:
 
 ```app/templates/components/send-message.hbs
 {{button-with-confirmation
@@ -151,8 +131,7 @@ We can do a similar thing for our `send-message` component:
 }}
 ```
 
-Now, we can use `onConfirm` in the child component to invoke the action on the
-parent:
+现在，我们可以在子组件中使用 `onConfirm` 来调用父组件的action:
 
 ```app/components/button-with-confirmation.js
 import Component from '@ember/component';
@@ -175,30 +154,24 @@ export default Component.extend({
 });
 ```
 
-`this.get('onConfirm')` will return the function passed from the parent as the
-value of `onConfirm`, and the following `()` will invoke the function.
+`this.get('onConfirm')` 将返回父组件中传递的 `onConfirm`的函数, 接下来的 `()` 将调用这个方法.
 
-Like normal attributes, actions can be a property on the component; the
+与普通属性一样，动作可以是组件上的属性; 唯一的区别是该属性设置为知道如何触发行为的函数( the
 only difference is that the property is set to a function that knows how
-to trigger behavior.
+to trigger behavior)。
 
-That makes it easy to remember how to add an action to a component. It's
-like passing an attribute, but you use the `action` helper to pass
-a function instead.
+这使得记住如何向组件添加操作变得很容易。 这就像传递一个属性，但你使用 `action` helper 来传递一个函数。
 
+组件中的操作允许您将发生的事件从其处理方式中分离出来，从而形成模块化，更可重用的组件。
 Actions in components allow you to decouple an event happening from how it's handled, leading to modular,
 more reusable components.
 
-## Handling Action Completion
+## Handling Action Completion(处理行动完成)
 
-Often actions perform asynchronous tasks, such as making an ajax request to a server.
-Since actions are functions that can be passed in by a parent component, they are able to return values when called.
-The most common scenario is for an action to return a promise so that the component can handle the action's completion.
+通常动作执行异步任务，例如向服务器发出ajax请求。由于动作是可以由父组件传入的函数，因此它们可以在调用时返回值。最常见的情况是操作返回promise，以便组件可以处理操作的完成。
 
-In our user `button-with-confirmation` component we want to leave the confirmation modal open until we know that the
-operation has completed successfully.
-This is accomplished by expecting a promise to be returned from `onConfirm`.
-Upon resolution of the promise, we set a property used to indicate the visibility of the confirmation modal.
+在我们的用户 `button-with-confirmation` 组件中，我们希望保留确认模式，直到我们知道操作已成功完成。这是通过期望从`onConfirm`返回的promise来实现的。
+在解决promise后，我们设置了一个用于指示确认模式可见性的属性。
 
 ```app/components/button-with-confirmation.js
 import Component from '@ember/component';
@@ -224,13 +197,10 @@ export default Component.extend({
 });
 ```
 
-## Passing Arguments
+## Passing Arguments(传递参数)
 
-Sometimes the parent component invoking an action has some context needed for the action that the child component
-doesn't.
-Consider, for example,
-the case where the `button-with-confirmation` component we've defined is used within `send-message`.
-The `sendMessage` action that we pass to the child component may expect a message type parameter to be provided as an argument:
+有时，父组件调用的action需要一些上下文但这些上下文子组件没有(Sometimes the parent component invoking an action has some context needed for the action that the child component
+doesn't)。例如，考虑一下`button-with-confirmation`组件被我们定义为需要使用`send-message`的情况。我们传递给子组件的`sendMessage`action可能需要提供一个消息类型参数作为参数:
 
 ```app/components/send-message.js
 import Component from '@ember/component';
@@ -244,10 +214,9 @@ export default Component.extend({
 });
 ```
 
-However,
-the `button-with-confirmation` component invoking the action doesn't know or care what type of message it's collecting.
-In cases like this, the parent template can provide the required parameter when the action is passed to the child.
-For example, if we want to use the button to send a message of type `"info"`:
+但是，调用动作的组件`button-with-confirmation`不知道或关心它正在收集什么类型的消息。
+在这种情况下，父级模板可以在将操作传递给子级时提供所需的参数。例如，如果我们想使用按钮
+发送类型为 `"info"`:
 
 ```app/templates/components/send-message.hbs
 {{button-with-confirmation
@@ -256,21 +225,19 @@ For example, if we want to use the button to send a message of type `"info"`:
 }}
 ```
 
-Within `button-with-confirmation`, the code in the `submitConfirm` action does not change.
-It will still invoke `onConfirm` without explicit arguments:
+在 `button-with-confirmation`内部, `submitConfirm` action 的代码不用改变.
+它仍然会调用 `onConfirm` 不用明确的参数:
 
 ```app/components/button-with-confirmation.js
 const promise = this.get('onConfirm')();
 ```
-However the expression `(action "sendMessage" "info")` used in passing the action to the component creates a closure,
-i.e. an object that binds the parameter we've provided to the function specified.
-So now when the action is invoked, that parameter will automatically be passed as its argument, effectively calling `sendMessage("info")`,
-despite the argument not appearing in the calling code.
+然而 `(action "sendMessage" "info")`将动作传递给组件的表达式会创建一个闭包,
+即一个绑定我们提供给指定函数的参数的对象。所以现在，当调用动作时，该参数将自动作为其参数
+传递，有效地调用`sendMessage("info")`,尽管参数不会出现在调用代码中。
 
-So far in our example, the action we have passed to `button-with-confirmation` is a function that accepts one argument,
-`messageType`.
-Suppose we want to extend this by allowing `sendMessage` to take a second argument,
-the actual text of the message the user is sending:
+到目前为止，在我们的例子中，我们传递给`button-with-confirmation`的action是一个接受一
+个参数`messageType`的方法。假设我们想通过允许`sendMessage`传递用户发送
+的消息的实际文本作为第二个参数来扩展它：
 
 ```app/components/send-message.js
 import Component from '@ember/component';
@@ -284,12 +251,9 @@ export default Component.extend({
 });
 ```
 
-We want to arrange for the action to be invoked from within `button-with-confirmation` with both arguments.
-We've seen already that if we provide a `messageType` value to the `action` helper when we insert `button-with-confirmation` into its parent `send-message` template,
-that value will be passed to the `sendMessage` action as its first argument automatically when invoked as `onConfirm`.
-If we subsequently pass a single additional argument to `onConfirm` explicitly,
-that argument will be passed to `sendMessage` as its second argument
-(This ability to provide arguments to a function one at a time is known as [currying](https://en.wikipedia.org/wiki/Currying)).
+我们想在`button-with-confirmation`内部使用两个参数调用这个action。我们已经知道如果我们
+提供一个`messageType`给 `action` helper当我们将`button-with-confirmation`插入到它的父组件`send-message`模板中时，
+这个值将被传递给`sendMessage` action作为它的第一个参数当调用`onConfirm`时。如果我们随后传递一个额外的参数给`onConfirm`，那么这个参数将作为`sendMessage`的第二个参数传递给这个函数（这种为函数提供参数的功能被称为[currying](https://en.wikipedia.org/wiki/Currying)）。
 
 In our case, the explicit argument that we pass to `onConfirm` will be the required `messageText`.
 However, remember that internally our `button-with-confirmation` component does not know or care that it is being used in a messaging application.
