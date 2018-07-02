@@ -255,10 +255,9 @@ export default Component.extend({
 提供一个`messageType`给 `action` helper当我们将`button-with-confirmation`插入到它的父组件`send-message`模板中时，
 这个值将被传递给`sendMessage` action作为它的第一个参数当调用`onConfirm`时。如果我们随后传递一个额外的参数给`onConfirm`，那么这个参数将作为`sendMessage`的第二个参数传递给这个函数（这种为函数提供参数的功能被称为[currying](https://en.wikipedia.org/wiki/Currying)）。
 
-In our case, the explicit argument that we pass to `onConfirm` will be the required `messageText`.
-However, remember that internally our `button-with-confirmation` component does not know or care that it is being used in a messaging application.
-Therefore within the component's javascript file,
-we will use a property `confirmValue` to represent that argument and pass it to `onConfirm` as shown here:
+在我们的案例中， 我们传递给`onConfirm`的明确的参数是必须的`messageText`.但是请记住，
+在我们的`button-with-confirmation`组件内部不知道或者说关心他在应用中被使用。因此，
+在组件的JavaScript文件中，我们将使用属性`confirmValue`来表示该参数并将其传递给`onConfirm`如下所示：
 
 ```app/components/button-with-confirmation.js
 import Component from '@ember/component';
@@ -278,10 +277,9 @@ export default Component.extend({
 });
 ```
 
-In order for `confirmValue` to take on the value of the message text,
-we'll bind the property to the value of a user input field that will appear when the button is clicked.
-To accomplish this,
-we'll first modify the component so that it can be used in block form and we will [yield](../wrapping-content-in-a-component/) `confirmValue` to the block within the `"confirmDialog"` element:
+为了获取 `confirmValue` 消息文本的值，我们将该属性绑定到用户输入字段的值，该值将在单击
+该按钮时显示。为了做到这一点，我们首先修改组件，以便它可以以块的形式使用，并且我们将[yield](../wrapping-content-in-a-component/) `confirmValue`到`"confirmDialog"`
+元素的内部块中:
 
 ```app/templates/components/button-with-confirmation.hbs
 <button {{action "launchConfirmDialog"}}>{{text}}</button>
@@ -294,8 +292,7 @@ we'll first modify the component so that it can be used in block form and we wil
 {{/if}}
 ```
 
-With this modification,
-we can now use the component in `send-message` to wrap a text input element whose `value` attribute is set to `confirmValue`:
+通过此修改，我们现在可以使用组件`send-message`来包裹将`value`属性设置为`confirmValue`的值的inpt元素：
 
 ```app/templates/components/send-message.hbs
 {{#button-with-confirmation
@@ -306,15 +303,14 @@ we can now use the component in `send-message` to wrap a text input element whos
 {{/button-with-confirmation}}
 ```
 
-When the user enters their message into the input field,
-the message text will now be available to the component as `confirmValue`.
-Then, once they click the "OK" button, the `submitConfirm` action will be triggered, calling `onConfirm` with the provided `confirmValue`,
-thus invoking the `sendMessage` action in `send-message` with both the `messageType` and `messageText` arguments.
+当用户将消息输入到输入字段中时，消息文本现在将作为`confirmValue`在组件中可用。然后，
+一旦他们点击“确定”按钮，`submitConfirm`动作就会被触发，调用`onConfirm`使用提供的参数
+`confirmValue`，从而在`send-message`中调用`sendMessage`action并提供`messageType`和
+`messageText`参数。
 
-## Invoking Actions Directly on Component Collaborators
+## Invoking Actions Directly on Component Collaborators(直接在组件协作者上调用操作)
 
-Actions can be invoked on objects other than the component directly from the template.  For example, in our
-`send-message` component we might include a service that processes the `sendMessage` logic.
+Actions可以被除了 直接从组件的模板中调用的组件以外的objects调用。例如，在我们的 `send-message`组件中，我们可能包含一个处理`sendMessage`逻辑的服务。
 
 ```app/components/send-message.js
 import Component from '@ember/component';
@@ -327,7 +323,7 @@ export default Component.extend({
 });
 ```
 
-We can tell the action to invoke the `sendMessage` action directly on the messaging service with the `target` attribute.
+我们可以告诉 `sendMessage`action使用`target`属性直接在消息传递服务上调用操作。
 
 ```app/templates/components/send-message.hbs
 {{#button-with-confirmation
@@ -338,8 +334,8 @@ We can tell the action to invoke the `sendMessage` action directly on the messag
 {{/button-with-confirmation}}
 ```
 
-By supplying the `target` attribute, the action helper will look to invoke the `sendMessage` action directly on the messaging
-service, saving us from writing code on the component that just passes the action along to the service.
+通过提供`target`属性，操作助手将直接在消息传递服务上调用`sendMessage`action，从而避免
+我们在组件上编写仅将action传递给service的代码。
 
 ```app/services/messaging.js
 import Service from '@ember/service';
@@ -353,12 +349,9 @@ export default Ember.Service.extend({
 });
 ```
 
-## Destructuring Objects Passed as Action Arguments
+## Destructuring Objects Passed as Action Arguments（解构对象作为动作参数传递）
 
-A component will often not know what information a parent needs to process an action, and will just pass all the
-information it has.
-For example, our `user-profile` component is going to notify its parent, `system-preferences-editor`, that a
-user's account was deleted, and passes along with it the full user profile object.
+一个组件往往不知道父组件处理一个动作需要什么信息，只会传递它拥有的所有信息。例如，我们的`user-profile`组件将通知其父级，`system-preferences-editor`用户的帐户已被删除，并传递完整的用户配置文件对象。
 
 
 ```app/components/user-profile.js
@@ -377,15 +370,14 @@ export default Component.extend({
 });
 ```
 
-All our `system-preferences-editor` component really needs to process a user deletion is an account ID.
-For this case, the action helper provides the `value` attribute to allow a parent component to dig into the passed
-object to pull out only what it needs.
+`system-preferences-editor`组件删除一个用户真正需要的是一个用户ID。对于这种情况，action
+ helper 提供`value`属性去允许父组件深入到传递的对象中以仅提取它所需的内容。
 
 ```app/templates/components/system-preferences-editor.hbs
 {{user-profile didDelete=(action "userDeleted" value="account.id")}}
 ```
 
-Now when the `system-preferences-editor` handles the delete action, it receives only the user's account `id` string.
+现在当`system-preferences-editor`处理删除操作时，它只接收用户的帐户id字符串。
 
 ```app/components/system-preferences-editor.js
 import Component from '@ember/component';
@@ -399,14 +391,13 @@ export default Component.extend({
 });
 ```
 
-## Calling Actions Up Multiple Component Layers
+## Calling Actions Up Multiple Component Layers（调用多个组件层的动作）
 
-When your components go multiple template layers deep, it is common to need to handle an action several layers up the tree.
-Using the action helper, parent components can pass actions to child components through templates alone without adding JavaScript code to those child components.
+当组件进入多个模板层时，通常需要在树上多层处理一个动作。使用动作助手，父组件可以通过模板将动作传递给子组件，而无需向这些子组件添加JavaScript代码。
 
-For example, say we want to move account deletion from the `user-profile` component to its parent `system-preferences-editor`.
+例如，假设我们想将帐户删除从`user-profile`组件中移动到其父组件`system-preferences-editor`中。
 
-First we would move the `deleteUser` action from `user-profile.js` to the actions object on `system-preferences-editor`.
+首先，我们将`deleteUser`action从`user-profile.js`中移动到`system-preferences-editor`的actions对象上。
 
 ```app/components/system-preferences-editor.js
 import Component from '@ember/component';
@@ -422,8 +413,7 @@ export default Component.extend({
 });
 ```
 
-Then our `system-preferences-editor` template passes its local `deleteUser` action into the `user-profile` as that
-component's `deleteCurrentUser` property.
+然后我们的`system-preferences-editor`模板将其本地`deleteUser`action传递到`user-profile`组件的`deleteCurrentUser`属性中。
 
 ```app/templates/components/system-preferences-editor.hbs
 {{user-profile
@@ -431,9 +421,10 @@ component's `deleteCurrentUser` property.
 }}
 ```
 
-The action `deleteUser` is in quotes, since `system-preferences-editor` is where the action is defined now. Quotes indicate that the action should be looked for in `actions` local to that component, rather than in those that have been passed from a parent.
+`deleteUser`是引号操作，因为`system-preferences-editor`现在是定义操作的位置。引号表示
+action应该在当前组件的`actions`中查找，而不是从子组件中查找。
 
-In our `user-profile.hbs` template we change our action to call `deleteCurrentUser` as passed above.
+在我们的`user-profile.hbs`模板中，我们改变我们的action去调用从上面传递的`deleteCurrentUser`
 
 ```app/templates/components/user-profile.hbs
 {{button-with-confirmation
@@ -442,6 +433,7 @@ In our `user-profile.hbs` template we change our action to call `deleteCurrentUs
 }}
 ```
 
-Note that `deleteCurrentUser` is no longer in quotes here as opposed to [previously](#toc_passing-the-action-to-the-component). Quotes are used to initially pass the action down the component tree, but at every subsequent level you are instead passing the actual function reference (without quotes) in the action helper.
+请注意，`deleteCurrentUser`此处不再使用引号，而与[之前](#toc_passing-the-action-to-the-component)相反。
+引号用于最初将操作传递给组件树，但是在每个后​​续的级别中，您都会在动作助手中传递实际的函数引用（不带引号）。
 
-Now when you confirm deletion, the action goes straight to the `system-preferences-editor` to be handled in its local context.
+现在，当您确认删除时，操作将直接进入`system-preferences-editor`在其本地上下文中处理的操作。

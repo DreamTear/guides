@@ -1,44 +1,38 @@
-Sometimes, you may want to define a component that wraps content provided by other templates.
+有时，您可能需要定义一个包装其他模板提供的内容的组件。
 
-For example, imagine we are building a `blog-post` component that we can use in our application to display a blog post:
+例如，假设我们正在构建一个`blog-post`组件，可以在我们的应用程序中使用它来显示博客帖子：
 
 ```app/templates/components/blog-post.hbs
 <h1>{{title}}</h1>
 <div class="body">{{body}}</div>
 ```
 
-Now, we can use the `{{blog-post}}` component and pass it properties in another template:
+现在，我们可以使用 `{{blog-post}}` 组件并在另一个模板中传递它的属性：
 
 ```handlebars
 {{blog-post title=title body=body}}
 ```
 
-See [Passing Properties to a Component](../passing-properties-to-a-component/) for more.
+有关更多信息，请参阅[将属性传递给组件](../passing-properties-to-a-component/)。
 
-In this case, the content we wanted to display came from the model.
-But what if we want the developer using our component to be able to provide custom HTML content?
+在这种情况下，我们想要显示的内容来自模型。但是，如果我们希望使用我们的组件的开发人员能够提供自定义HTML内容呢？
 
-In addition to the simple form you've learned so far,
-components also support being used in **block form**.
-In block form, components can be passed a Handlebars template that is rendered inside the component's template wherever the `{{yield}}` expression appears.
+除了您迄今为止学到的简单形式，组件还支持以 **块形式** 使用。在块形式中，组件可以传递Handlebars模板，该模板在`{{yield}}`表达式出现的任何位置呈现在组件的模板内。
 
-To use the block form, add a `#` character to the beginning of the component name,
-then make sure to add a closing tag.
+要使用块形式，请在组件名称的开头添加一个`#`字符，然后确保添加结束标记。
 
-See the Handlebars documentation on [block expressions](http://handlebarsjs.com/#block-expressions) for more.
+有关更多信息，请参阅有关[块表达式](http://handlebarsjs.com/#block-expressions)的Handlebars文档。
 
-In that case, we can use the `{{blog-post}}` component in **block form** and tell Ember where the block content should be rendered using the `{{yield}}` helper.
-To update the example above, we'll first change the component's template:
+在这种情况下，我们可以在`{{blog-post}}`组件中使用 **块形式** ，并告诉Ember块内容应该使用`{{yield}}`助手呈现在哪里。要更新上面的示例，我们将首先更改组件的模板：
 
 ```app/templates/components/blog-post.hbs
 <h1>{{title}}</h1>
 <div class="body">{{yield}}</div>
 ```
 
-You can see that we've replaced `{{body}}` with `{{yield}}`.
-This tells Ember that this content will be provided when the component is used.
+你可以看到我们已经用`{{yield}}`取代了 `{{body}}`.这告诉Ember使用该组件时将提供此内容。
 
-Next, we'll update the template using the component to use the block form:
+接下来，我们将使用块形式更新组件模板：
 
 ```app/templates/index.hbs
 {{#blog-post title=title}}
@@ -47,8 +41,7 @@ Next, we'll update the template using the component to use the block form:
 {{/blog-post}}
 ```
 
-It's important to note that the template scope inside the component block is the same as outside.
-If a property is available in the template outside the component, it is also available inside the component block.
+重要的是要注意，组件块内的模板范围与外部相同。如果组件外部的模板中有属性，则组件块中也可以使用该属性。
 
 ## Sharing Component Data with its Wrapped Content
 
@@ -65,7 +58,7 @@ We will give them the option to specify either `markdown-style` or `html-style`.
 
 Supporting different editing styles will require different body components to provide special validation and highlighting.
 To load a different body component based on editing style,
-you can yield the component using the [`component helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) and [`hash helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/hash?anchor=hash). 
+you can yield the component using the [`component helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) and [`hash helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/hash?anchor=hash).
 Here, the appropriate component is assigned to a hash using nested helpers and yielded to the template.
 Notice `editStyle` being used as an argument to the component helper.
 
