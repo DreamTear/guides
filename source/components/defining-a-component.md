@@ -6,9 +6,7 @@ ember generate component my-component-name
 
 Ember组件用于将标记和样式封装为可重用内容。组件由两部分组成：一个用于定义行为的JavaScript组件文件，以及为组件的UI定义标记的随附Handlebars模板。
 
-组件的名称中必须至少有一个破折号。 因此 `blog-post` 是一个可以接受的名字， `audio-player-controls`也是, 但是 `post` 不是. 这可以防止与当前或未来的HTML元素名称发生冲突， 将Ember组件与W3C [Custom
-Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)
-规范对齐， 并确保Ember自动检测组件。
+组件的名称中必须至少有一个破折号。 因此 `blog-post` 是一个可以接受的名字， `audio-player-controls`也是, 但是 `post` 不是. 这可以防止与当前或未来的HTML元素名称发生冲突， 将Ember组件与W3C [Custom Elements](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)规范对齐， 并确保Ember自动检测组件。
 
 示例组件模板可能如下所示：
 
@@ -43,8 +41,7 @@ export default Route.extend({
 ```
 
 每个组件返回一个元素（原文：Each component is backed by an element under the hood. ）默认情况下，Ember将使用一个 `<div>` 元素来包含组件的模板。
-要了解如何更改Ember用于组件的元素， 请参阅
-[自定义组件的元素](../customizing-a-components-element).
+要了解如何更改Ember用于组件的元素， 请参阅[自定义组件的元素](../customizing-a-components-element).
 
 
 ## Defining a Component Subclass(定义组件子类)
@@ -54,8 +51,7 @@ export default Route.extend({
 如果您需要自定义组件的行为，你需要定义 [`Component`](https://www.emberjs.com/api/ember/release/classes/Component)的子类. 例如，如果您想要更改组件的元素，响应组件的模板中的操作，或者使用JavaScript手动更改组件的元素，则需要自定义子类。
 
 Ember通过文件名知道哪个类控制哪个组件. 例如，如果您有一个名为 `blog-post`的组件, 你将创建一个 `app/components/blog-post.js`文件. 如果你的组件名字叫
-`audio-player-controls`, 对应的文件名应该叫
-`app/components/audio-player-controls.js`.
+`audio-player-controls`, 对应的文件名应该叫`app/components/audio-player-controls.js`.
 
 ## Dynamically rendering a component(动态渲染组件)
 

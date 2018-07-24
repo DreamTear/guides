@@ -1,11 +1,8 @@
-Unlike most other frameworks that include some sort of binding implementation,
-bindings in Ember.js can be used with any object. That said, bindings are most
-often used within the Ember framework itself, and for most problems Ember app
-developers face, computed properties are the appropriate solution.
+正如其他的框架一样Ember也包含了多种方式绑定实现，并且可以在任何一个对象上使用绑定。也就是说，绑定大多数情况都是使用在Ember框架本身，对于开发最好还是使用计算属性。
 
 
-The easiest way to create a two-way binding is to use a [`computed.alias()`](https://www.emberjs.com/api/ember/release/classes/@ember%2Fobject%2Fcomputed/methods/alias?anchor=alias&show=inherited%2Cprotected%2Cprivate%2Cdeprecated),
-that specifies the path to another object.
+创建双向绑定最简单的方式是使用 [`computed.alias()`](https://www.emberjs.com/api/ember/release/classes/@ember%2Fobject%2Fcomputed/methods/alias?anchor=alias&show=inherited%2Cprotected%2Cprivate%2Cdeprecated),
+指定另一个对象的路径。
 
 ```javascript
 import EmberObject from '@ember/object';

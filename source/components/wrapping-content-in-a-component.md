@@ -43,11 +43,11 @@
 
 重要的是要注意，组件块内的模板范围与外部相同。如果组件外部的模板中有属性，则组件块中也可以使用该属性。
 
-## Sharing Component Data with its Wrapped Content
+## Sharing Component Data with its Wrapped Content（使用包装内容共享组件数据）
 
-There is also a way to share data within your blog post component with the content it is wrapping.
-In our blog post component we want to provide a way for the user to configure what type of style they want to write their post in.
-We will give them the option to specify either `markdown-style` or `html-style`.
+还有一种方法可以将博客文章组件中的数据与其包装的内容进行共享。
+在我们的博客文章组件中，我们希望为用户提供一种方式来配置他们想要写入帖子的方式。
+我们将为他们提供指定的选项`markdown-style`或者`html-style`。
 
 ```app/templates/index.hbs
 {{#blog-post editStyle="markdown-style"}}
@@ -56,19 +56,18 @@ We will give them the option to specify either `markdown-style` or `html-style`.
 {{/blog-post}}
 ```
 
-Supporting different editing styles will require different body components to provide special validation and highlighting.
-To load a different body component based on editing style,
-you can yield the component using the [`component helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component) and [`hash helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/hash?anchor=hash).
-Here, the appropriate component is assigned to a hash using nested helpers and yielded to the template.
-Notice `editStyle` being used as an argument to the component helper.
+支持不同的编辑样式将需要不同的主体组件来提供特殊的验证和高亮显示。
+要根据编辑样式加载不同的主体组件，可以使用[`component helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/component?anchor=component)和生成组件[`hash helper`](https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/hash?anchor=hash)。
+在这里，使用嵌套的帮助程序将适当的组件分配给哈希并将其输出到模板。
+请注意，`editStyle`它被用作`component helper`的参数。
 
 ```app/templates/components/blog-post.hbs
 <h2>{{title}}</h2>
 <div class="body">{{yield (hash body=(component editStyle))}}</div>
 ```
 
-Once yielded, the data can be accessed by the wrapped content by referencing the `post` variable.
-Now a component called `markdown-style` will be rendered in `{{post.body}}`.
+一旦设置，通过引用`post`变量，`wrapped content`可以访问数据。
+现在叫做`markdown-style`的组件将被渲染到 `{{post.body}}` 中。
 
 ```app/templates/index.hbs
 {{#blog-post editStyle="markdown-style" postData=myText as |post|}}
@@ -77,8 +76,7 @@ Now a component called `markdown-style` will be rendered in `{{post.body}}`.
 {{/blog-post}}
 ```
 
-Finally, we need to share `myText` with the body in order to have it display.
-To pass the blog text to the body component, we'll add a `postData` argument to the component helper.
+最后，我们需要分享`myText`,这样他才能在`body`中展示它。要将博客文本传递给body组件，我们将向组件助手添加一个`postData`参数。
 
 ```app/templates/components/blog-post.hbs
 <h2>{{title}}</h2>
@@ -89,14 +87,9 @@ To pass the blog text to the body component, we'll add a `postData` argument to 
 </div>
 ```
 
-At this point, our block content has access to everything it needs to render,
-via the wrapping `blog-post` component's template helpers.
+此时，我们的内容块已经通过`blog-post`组件获得他渲染所需要的所有内容。
 
-Additionally, since the component isn't instantiated until the block content is rendered,
-we can add arguments within the block.
-In this case we'll add a text style option which will dictate the style of the body text we want in our post.
-When `{{post.body}}` is instantiated, it will have both the `editStyle` and `postData` given by its wrapping component,
-as well as the `bodyStyle` declared in the template.
+此外，由于在呈现块内容之前不会实例化组件，因此我们可以在块中添加参数。在这种情况下，我们将添加一个文本样式选项，它将指示我们在帖子中想要的正文文本的样式。在 `{{post.body}}` 实例化时，它将包含由包装组件提供的`editStyle`和`postData`以及模板中声明的`bodyStyle`。
 
 ```app/templates/index.hbs
 {{#blog-post editStyle="markdown-style" postData=myText as |post|}}
@@ -105,5 +98,4 @@ as well as the `bodyStyle` declared in the template.
 {{/blog-post}}
 ```
 
-Components built this way are commonly referred to as "Contextual Components",
-allowing inner components to be wrapped within the context of outer components without breaking encapsulation.
+以这种方式构建的组件通常被称为“上下文组件”，允许内部组件在外部组件的上下文中包装而不破坏封装。
